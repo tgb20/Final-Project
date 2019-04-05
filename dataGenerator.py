@@ -5,7 +5,7 @@ import math
 numRows = 1000
 
 with open('fake_data.csv', 'w') as csvfile:
-    fieldnames = ['id', 'temp', 'pressure', 'humidity', 'wind']
+    fieldnames = ['id', 'weather', 'temp', 'pressure', 'humidity', 'wind']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
     writer.writeheader()
@@ -16,4 +16,5 @@ with open('fake_data.csv', 'w') as csvfile:
         temp = 0 if pressure > 500 else 100
         wind = random.randrange(0, 50)
         humidity = abs(math.sin(wind))
-        writer.writerow({'id': i, 'temp': temp, 'pressure': pressure, 'humidity': humidity, 'wind': wind})
+        cloud = "Cloudy" if temp == 0 else "Sunny"
+        writer.writerow({'id': i,'weather': cloud,'temp': temp, 'pressure': pressure, 'humidity': humidity, 'wind': wind})
