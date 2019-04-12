@@ -40,179 +40,43 @@
               <ion-card>
                   <ion-card-header>
                     <ion-card-subtitle color="primary">OpenWeatherMap</ion-card-subtitle>
-                    <ion-card-title>5 Day Forecast</ion-card-title>
+                    <ion-card-title>5 Day Forecast for {{city}}, {{country}}</ion-card-title>
                   </ion-card-header>
                   <ion-card-content>
                     Predictions provided by OpenWeatherMap
                     <br>
                     <ion-grid>
                       <ion-row>
-                        <ion-col>
+                        <ion-col *ngFor="let pred of owmPreds">
                           <ion-card>
                             <ion-card-header>
-                              <ion-card-subtitle>04/11</ion-card-subtitle>
-                              <ion-card-title>Today</ion-card-title>
+                              <ion-card-subtitle>{{pred.dt}}</ion-card-subtitle>
+                              <ion-card-title>{{pred.dow}}</ion-card-title>
                             </ion-card-header>
                             <ion-card-content>
-                              <ion-chip color="warning">
-                                <ion-icon name="sunny"></ion-icon>
-                                <ion-label>Clear</ion-label>
+                              <ion-chip color={{pred.color}}>
+                                <ion-icon name={{pred.icon}}></ion-icon>
+                                <ion-label>{{pred.weather}}</ion-label>
                               </ion-chip>
                               <br>
                               <ion-chip>
                                 <ion-icon name="thermometer"></ion-icon>
-                                <ion-label>54°/35° F</ion-label>
+                                <ion-label>{{pred.temp}}</ion-label>
                               </ion-chip>
                               <br>
                               <ion-chip>
-                                <ion-icon name="fitness"></ion-icon>
-                                <ion-label>1024 kPa</ion-label>
+                                <ion-icon name="arrow-down"></ion-icon>
+                                <ion-label>{{pred.press}}</ion-label>
                               </ion-chip>
                               <br>
                               <ion-chip>
-                                <ion-icon name="umbrella"></ion-icon>
-                                <ion-label>83%</ion-label>
+                                <ion-icon name="water"></ion-icon>
+                                <ion-label>{{pred.humd}}</ion-label>
                               </ion-chip>
                               <br>
                               <ion-chip>
-                                <ion-icon name="paper-plane"></ion-icon>
-                                <ion-label>3.76 mph</ion-label>
-                              </ion-chip>
-                            </ion-card-content>
-                          </ion-card>
-                        </ion-col>
-                        <ion-col>
-                          <ion-card>
-                            <ion-card-header>
-                              <ion-card-subtitle>04/12</ion-card-subtitle>
-                              <ion-card-title>Tomorrow</ion-card-title>
-                            </ion-card-header>
-                            <ion-card-content>
-                              <ion-chip color="secondary">
-                                <ion-icon name="snow"></ion-icon>
-                                <ion-label>Snow</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="thermometer"></ion-icon>
-                                <ion-label>54°/35° F</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="fitness"></ion-icon>
-                                <ion-label>1024 kPa</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="umbrella"></ion-icon>
-                                <ion-label>83%</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="paper-plane"></ion-icon>
-                                <ion-label>3.76 mph</ion-label>
-                              </ion-chip>
-                            </ion-card-content>
-                          </ion-card>
-                        </ion-col>
-                        <ion-col>
-                          <ion-card>
-                            <ion-card-header>
-                              <ion-card-subtitle>04/13</ion-card-subtitle>
-                              <ion-card-title>Saturday</ion-card-title>
-                            </ion-card-header>
-                            <ion-card-content>
-                              <ion-chip color="medium">
-                                <ion-icon name="cloud"></ion-icon>
-                                <ion-label>Cloudy</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="thermometer"></ion-icon>
-                                <ion-label>54°/35° F</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="fitness"></ion-icon>
-                                <ion-label>1024 kPa</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="umbrella"></ion-icon>
-                                <ion-label>83%</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="paper-plane"></ion-icon>
-                                <ion-label>3.76 mph</ion-label>
-                              </ion-chip>
-                            </ion-card-content>
-                          </ion-card>
-                        </ion-col>
-                        <ion-col>
-                          <ion-card>
-                            <ion-card-header>
-                              <ion-card-subtitle>04/14</ion-card-subtitle>
-                              <ion-card-title>Sunday</ion-card-title>
-                            </ion-card-header>
-                            <ion-card-content>
-                              <ion-chip color="danger">
-                                <ion-icon name="thunderstorm"></ion-icon>
-                                <ion-label>Thunderstorm</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="thermometer"></ion-icon>
-                                <ion-label>54°/35° F</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="fitness"></ion-icon>
-                                <ion-label>1024 kPa</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="umbrella"></ion-icon>
-                                <ion-label>83%</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="paper-plane"></ion-icon>
-                                <ion-label>3.76 mph</ion-label>
-                              </ion-chip>
-                            </ion-card-content>
-                          </ion-card>
-                        </ion-col>
-                        <ion-col>
-                          <ion-card>
-                            <ion-card-header>
-                              <ion-card-subtitle>04/15</ion-card-subtitle>
-                              <ion-card-title>Monday</ion-card-title>
-                            </ion-card-header>
-                            <ion-card-content>
-                              <ion-chip color="warning">
-                                <ion-icon name="sunny"></ion-icon>
-                                <ion-label>Clear</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="thermometer"></ion-icon>
-                                <ion-label>54°/35° F</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="fitness"></ion-icon>
-                                <ion-label>1024 kPa</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="umbrella"></ion-icon>
-                                <ion-label>83%</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="paper-plane"></ion-icon>
-                                <ion-label>3.76 mph</ion-label>
+                                <ion-icon name="flag"></ion-icon>
+                                <ion-label>{{pred.wind}}</ion-label>
                               </ion-chip>
                             </ion-card-content>
                           </ion-card>

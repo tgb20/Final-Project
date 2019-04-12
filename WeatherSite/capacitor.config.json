@@ -1,0 +1,6 @@
+{
+  "appId": "haus.orange.WeatherSite",
+  "appName": "WeatherSite",
+  "bundledWebRuntime": false,
+  "webDir": "www"
+}
