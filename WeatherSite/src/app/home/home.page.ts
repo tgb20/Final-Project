@@ -30,6 +30,11 @@ export class HomePage {
     win.focus();
   }
 
+  openGithub(){
+    var win = window.open("https://github.com/tgb20/Final-Project", '_blank');
+    win.focus();
+  }
+
   getOpenWeatherMapData() {
 
     this.http.get('https://api.openweathermap.org/data/2.5/forecast?q=Boston&APPID=2efe065bf1aaf366c8aa78532ce3244a').subscribe((response) => {

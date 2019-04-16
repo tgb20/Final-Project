@@ -1,19 +1,19 @@
 <ion-header>
   <ion-toolbar>
-    <ion-segment (ionChange)="slides.slideTo(segment)" [(ngModel)]="segment" value = "0">
-        <ion-segment-button value="0" checked>
-          <ion-icon name="sunny"></ion-icon>
-          <ion-label>Predictions</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="1">
-          <ion-icon name="stats"></ion-icon>
-          <ion-label>Data Insights</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="2">
-            <ion-icon name="code-download"></ion-icon>
-            <ion-label>Documentation</ion-label>
-          </ion-segment-button>
-      </ion-segment>
+    <ion-segment (ionChange)="slides.slideTo(segment)" [(ngModel)]="segment" value="0">
+      <ion-segment-button value="0" checked>
+        <ion-icon name="sunny"></ion-icon>
+        <ion-label>Predictions</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="1">
+        <ion-icon name="stats"></ion-icon>
+        <ion-label>Data Insights</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="2">
+        <ion-icon name="code-download"></ion-icon>
+        <ion-label>Documentation</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
@@ -35,70 +35,92 @@
     </ion-fab-list>
   </ion-fab>
   <div class="ion-padding">
-      <ion-slides #slides (ionSlideWillChange)="segment=''+slides.getActiveIndex()" pager="false" [options]="slideOpts">
-          <ion-slide>
-              <ion-card>
-                  <ion-card-header>
-                    <ion-card-subtitle color="primary">OpenWeatherMap</ion-card-subtitle>
-                    <ion-card-title>5 Day Forecast for {{city}}, {{country}}</ion-card-title>
-                  </ion-card-header>
-                  <ion-card-content>
-                    Predictions provided by OpenWeatherMap
-                    <br>
-                    <ion-grid>
-                      <ion-row>
-                        <ion-col *ngFor="let pred of owmPreds">
-                          <ion-card>
-                            <ion-card-header>
-                              <ion-card-subtitle>{{pred.dt}}</ion-card-subtitle>
-                              <ion-card-title>{{pred.dow}}</ion-card-title>
-                            </ion-card-header>
-                            <ion-card-content>
-                              <ion-chip color={{pred.color}}>
-                                <ion-icon name={{pred.icon}}></ion-icon>
-                                <ion-label>{{pred.weather}}</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="thermometer"></ion-icon>
-                                <ion-label>{{pred.temp}}</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="arrow-down"></ion-icon>
-                                <ion-label>{{pred.press}}</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="water"></ion-icon>
-                                <ion-label>{{pred.humd}}</ion-label>
-                              </ion-chip>
-                              <br>
-                              <ion-chip>
-                                <ion-icon name="flag"></ion-icon>
-                                <ion-label>{{pred.wind}}</ion-label>
-                              </ion-chip>
-                            </ion-card-content>
-                          </ion-card>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card-content>
-                  <ion-fab vertical="top" horizontal="end" slot="fixed">
-                    <ion-fab-button (click)="openOpenWeatherMap()" size="small">
-                      <ion-icon name="link"></ion-icon>
-                    </ion-fab-button>
-                  </ion-fab>
-                </ion-card>
-          </ion-slide>
-      
-          <ion-slide>
-            <h1>Data Insights</h1>
-          </ion-slide>
-      
-          <ion-slide>
-            <h1>Documentation</h1>
-          </ion-slide>
-        </ion-slides>
+    <ion-slides #slides (ionSlideWillChange)="segment=''+slides.getActiveIndex()" pager="false" [options]="slideOpts">
+      <ion-slide>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle color="primary">OpenWeatherMap</ion-card-subtitle>
+            <ion-card-title>5 Day Forecast for {{city}}, {{country}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Predictions provided by OpenWeatherMap
+            <br>
+            <ion-grid>
+              <ion-row>
+                <ion-col *ngFor="let pred of owmPreds">
+                  <ion-card>
+                    <ion-card-header>
+                      <ion-card-subtitle>{{pred.dt}}</ion-card-subtitle>
+                      <ion-card-title>{{pred.dow}}</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                      <ion-chip color={{pred.color}}>
+                        <ion-icon name={{pred.icon}}></ion-icon>
+                        <ion-label>{{pred.weather}}</ion-label>
+                      </ion-chip>
+                      <br>
+                      <ion-chip>
+                        <ion-icon name="thermometer"></ion-icon>
+                        <ion-label>{{pred.temp}}</ion-label>
+                      </ion-chip>
+                      <br>
+                      <ion-chip>
+                        <ion-icon name="arrow-down"></ion-icon>
+                        <ion-label>{{pred.press}}</ion-label>
+                      </ion-chip>
+                      <br>
+                      <ion-chip>
+                        <ion-icon name="water"></ion-icon>
+                        <ion-label>{{pred.humd}}</ion-label>
+                      </ion-chip>
+                      <br>
+                      <ion-chip>
+                        <ion-icon name="flag"></ion-icon>
+                        <ion-label>{{pred.wind}}</ion-label>
+                      </ion-chip>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+          <ion-fab vertical="top" horizontal="end" slot="fixed">
+            <ion-fab-button (click)="openOpenWeatherMap()" size="small">
+              <ion-icon name="link"></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
+        </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Introduction</ion-card-title>
+            <ion-card-subtitle>Data was sourced from OpenWeatherMap</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            This page will serve to provide validation for our models and further insight into the data collected.
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <ion-slide>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Documentation</ion-card-title>
+              <ion-card-subtitle>Our project is hosted on GitHub</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <br>
+              <br>
+              <ion-fab vertical="center" horizontal="center">
+                <ion-fab-button (click)="openGithub()" color="medium" size="small">
+                  <ion-icon name="logo-github"></ion-icon>
+                </ion-fab-button>
+              </ion-fab>
+            </ion-card-content>
+          </ion-card>
+        </ion-slide>
+      </ion-slide>
+    </ion-slides>
   </div>
 </ion-content>
