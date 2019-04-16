@@ -81,8 +81,8 @@ export class HomePage {
 
           var temp = "" + ((9.0/5.0) * (pred.main.temp - 273) + 32).toFixed(2) + "° F";
           var humd = pred.main.humidity + "%";
-          var press = pred.main.pressure + " kPa";
-          var wind = pred.wind.speed + " mph";
+          var press = pred.main.pressure.toFixed(2) + " hPa";
+          var wind = (pred.wind.speed * 2.23694).toFixed(2) + " mph";
 
           var weather = pred.weather[0].main;
 
