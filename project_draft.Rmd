@@ -1,0 +1,92 @@
+---
+title: "Project draft"
+author: "lucy and Jacob"
+date: "4/5/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+## KNN
+```{r}
+library(ROCR)
+library(class)
+
+data.df <- read.csv("fake_data.csv")
+set.seed(12345)
+data.size <- nrow(data.df)
+train.size <- .80
+num.test.labels <- data.size*(1-train.size)
+
+
+data.df$weather <- as.factor(data.df$weather)
+levels(data.df$weather) <- c("Cloudy", "Sunny")
+
+normalize.it <- function(vec) {
+    y <- (vec - min(vec))/(max(vec) - min(vec))
+    y
+}
+    
+weather.lst <- lapply(data.df[ , 3:6], normalize.it)
+data.weather.normed <- data.frame(weather.lst)
+summary(data.weather.normed)
+
+train.row.nums <- sample(1:data.size, data.size*train.size, replace = FALSE)
+train.data <- subset(data.weather.normed[train.row.nums, ])
+
+test.row.nums <- setdiff(1:data.size, train.row.nums)
+test.data <- subset(data.weather.normed[test.row.nums, ])
+
+class.labels <- data.df$weather[train.row.nums]
+true.labels <- data.df$weather[test.row.nums]
+
+knn.predict <- knn(train.data, test.data, class.labels, k=2)
+
+num.incorrect.labels <- sum(knn.predict != true.labels)
+misc.rate <- num.incorrect.labels/num.test.labels
+misc.rate
+
+conf.matrix <- table(knn.predict, true.labels)
+conf.matrix
+```
+
+## Linear Regression
+```{r}
+fit.weather <- lm(pressure~humidity, data=data.df)
+summary(fit.weather)
+plot(fit.weather)
+
+actual.scores <- test.data$humidity
+fit.predicted <- predict(fit.weather, actual.scores, interval = "predict")
+summary(fit.predicted)
+
+num.incorrect.labels2 <- sum(fit.predicted != actual.scores)
+misc.rate2 <- num.incorrect.labels/num.test.labels
+misc.rate2
+
+```
+
+#Time Series
+```{r}
+weather.vec <- scan("fake_data.csv")
+weather.ts <- ts(weather.vec, frequency = 12, start = c(2018, 2))
+plot(weather.ts)
+
+```
+
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
