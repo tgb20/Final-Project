@@ -60,18 +60,17 @@ conf.matrix
 
 ## Linear Regression
 ```{r}
-fit.weather <- lm(pressure~humidity, data=data.df)
+fit.weather <- lm(pressure~humidity, data=data.df[,-1])
 summary(fit.weather)
 plot(fit.weather)
-
-actual.scores <- test.data$humidity
+actual.scores <- as.data.frame(test.data$pressure)
 fit.predicted <- predict(fit.weather, actual.scores, interval = "predict")
 summary(fit.predicted)
 
-num.incorrect.labels2 <- sum(fit.predicted != actual.scores)
-misc.rate2 <- num.incorrect.labels/num.test.labels
-misc.rate2
-
+fit2.weather <- lm(temp~., data = data.df[,-c(1,2)])
+summary(fit2.weather)
+actual.scores2 <- as.data.frame(test.data$temp)
+fit.predicted2 <- predict(fit2.weather, actual.scores2, interval = "predict")
 ```
 
 #Time Series
