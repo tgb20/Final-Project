@@ -105,8 +105,10 @@ conf.matrix
 
 ```{r} 
 data.df <- read.csv("cleaned_data.csv")
+summary(data.df)
+plot(data.df)
 data.df <- (na.omit(data.df$weathertype))
-k2 <- kmeans(data.df, centers = 4, nstart = 25)
+k2 <- kmeans(data.df, centers = 11, nstart = 25)
 ```
 
 
