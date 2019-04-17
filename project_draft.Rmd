@@ -58,6 +58,50 @@ conf.matrix <- table(knn.predict, true.labels)
 conf.matrix
 ```
 
+```{r}
+library(ROCR)
+library(class)
+
+data.df <- read.csv("cleaned_data.csv")
+set.seed(12345)
+data.size <- nrow(data.df)
+train.size <- .80
+num.test.labels <- data.size*(1-train.size)
+
+
+data.df$weather <- as.factor(data.df$weather)
+levels(data.df$weather) <- c("Cloudy", "Sunny")
+
+normalize.it <- function(vec) {
+    y <- (vec - min(vec))/(max(vec) - min(vec))
+    y
+}
+    
+weather.lst <- lapply(data.df[ , 3:6], normalize.it)
+data.weather.normed <- data.frame(weather.lst)
+summary(data.weather.normed)
+
+train.row.nums <- sample(1:data.size, data.size*train.size, replace = FALSE)
+train.data <- subset(data.weather.normed[train.row.nums, ])
+
+test.row.nums <- setdiff(1:data.size, train.row.nums)
+test.data <- subset(data.weather.normed[test.row.nums, ])
+
+class.labels <- data.df$weather[train.row.nums]
+true.labels <- data.df$weather[test.row.nums]
+
+knn.predict <- knn(train.data, test.data, class.labels, k=2)
+
+
+num.incorrect.labels <- sum(knn.predict != true.labels)
+misc.rate <- num.incorrect.labels/num.test.labels
+misc.rate
+
+conf.matrix <- table(knn.predict, true.labels)
+conf.matrix
+```
+
+
 ## Linear Regression
 ```{r}
 fit.weather <- lm(pressure~humidity, data=data.df[,-1])
