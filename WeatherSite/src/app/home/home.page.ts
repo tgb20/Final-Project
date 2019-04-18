@@ -45,6 +45,11 @@ export class HomePage {
     win.focus();
   }
 
+  openFakeCSV(){
+    var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Data/fake_data.csv", '_blank');
+    win.focus();
+  }
+
   openCompressedCSV(){
     var win = window.open("https://github.com/tgb20/Final-Project", '_blank');
     win.focus();
