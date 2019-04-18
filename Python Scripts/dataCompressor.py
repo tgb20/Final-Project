@@ -1,12 +1,12 @@
 import json
 import csv
-with open('cleaned_data.csv', 'w') as csvfile:
+with open('../Data/compressed_data.csv', 'w') as csvfile:
     fieldnames = ['id', 'weathertype', 'temp', 'pressure', 'humidity', 'mintemp', 'maxtemp', 'windspeed', 'winddeg', 'cloudcov', 'dt', 'dtiso']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
     pID = 0
-    with open('raw_data.json') as json_file:
+    with open('../Data/raw_data.json') as json_file:
         data = json.load(json_file)
         for p in data:
             weathertype = p["weather"][0]["main"]

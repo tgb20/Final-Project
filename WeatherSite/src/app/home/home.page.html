@@ -7,9 +7,13 @@
       </ion-segment-button>
       <ion-segment-button value="1">
         <ion-icon name="stats"></ion-icon>
-        <ion-label>Data Insights</ion-label>
+        <ion-label>Analysis</ion-label>
       </ion-segment-button>
-      <ion-segment-button value="2">
+      <ion-segment-button value="2" checked>
+        <ion-icon name="folder"></ion-icon>
+        <ion-label>Data</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="3">
         <ion-icon name="code-download"></ion-icon>
         <ion-label>Documentation</ion-label>
       </ion-segment-button>
@@ -22,17 +26,6 @@
     <ion-fab-button>
       <ion-icon name="help"></ion-icon>
     </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button>
-        <ion-icon name="code-download"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="stats"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="sunny"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
   </ion-fab>
   <div class="ion-padding">
     <ion-slides #slides (ionSlideWillChange)="segment=''+slides.getActiveIndex()" pager="false" [options]="slideOpts">
@@ -99,6 +92,86 @@
           </ion-card-header>
           <ion-card-content>
             This page will serve to provide validation for our models and further insight into the data collected.
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+      <ion-slide>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Data Files</ion-card-title>
+            <ion-card-subtitle>All files we used to build our models</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+              <ion-item>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col text-center>
+                      <ion-label>Raw JSON</ion-label>
+                    </ion-col>
+                    <ion-col text-center>
+                      Raw JSON file we aquired from OpenWeatherMap
+                    </ion-col>
+                    <ion-col text-center>
+                        <ion-button shape="round" (click)="openRawJSON()">
+                            <ion-icon name="download"></ion-icon>
+                        </ion-button>
+                      </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+              <ion-item>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col text-center>
+                      <ion-label>Fake CSV</ion-label>
+                    </ion-col>
+                    <ion-col text-center>
+                      A fake CSV dataset used for building our model blueprints.
+                    </ion-col>
+                    <ion-col text-center>
+                      <ion-button shape="round" (click)="openFakeCSV()">
+                          <ion-icon name="download"></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+              <ion-item>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col text-center>
+                      <ion-label>Cleaned CSV</ion-label>
+                    </ion-col>
+                    <ion-col text-center>
+                      CSV version of our full data set with unused data removed and converted to CSV.
+                    </ion-col>
+                    <ion-col text-center>
+                        <ion-button shape="round" (click)="openCleanedCSV()">
+                            <ion-icon name="download"></ion-icon>
+                        </ion-button>
+                      </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+              <ion-item>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col text-center>
+                      <ion-label>Compressed CSV</ion-label>
+                    </ion-col>
+                    <ion-col text-center>
+                      CSV dataset used for graphics on the website.
+                    </ion-col>
+                    <ion-col text-center>
+                      <ion-button shape="round" (click)="openCompressedCSV()">
+                          <ion-icon name="download"></ion-icon>
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+            </ion-list>
           </ion-card-content>
         </ion-card>
       </ion-slide>
