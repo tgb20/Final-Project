@@ -4,7 +4,7 @@ import math
 
 numRows = 1000
 
-with open('fake_data.csv', 'w') as csvfile:
+with open('../Data/fake_data.csv', 'w') as csvfile:
     fieldnames = ['id', 'weather', 'temp', 'pressure', 'humidity', 'wind']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
