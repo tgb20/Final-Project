@@ -35,6 +35,21 @@ export class HomePage {
     win.focus();
   }
 
+  openRawJSON(){
+    var win = window.open("https://github.com/tgb20/Final-Project/raw/master/raw_data.json", '_blank');
+    win.focus();
+  }
+
+  openCleanedCSV(){
+    var win = window.open("https://github.com/tgb20/Final-Project/raw/master/cleaned_data.csv", '_blank');
+    win.focus();
+  }
+
+  openCompressedCSV(){
+    var win = window.open("https://github.com/tgb20/Final-Project", '_blank');
+    win.focus();
+  }
+
   getOpenWeatherMapData() {
 
     this.http.get('https://api.openweathermap.org/data/2.5/forecast?q=Boston&APPID=2efe065bf1aaf366c8aa78532ce3244a').subscribe((response) => {
