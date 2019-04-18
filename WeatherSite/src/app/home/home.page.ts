@@ -36,12 +36,12 @@ export class HomePage {
   }
 
   openRawJSON(){
-    var win = window.open("https://github.com/tgb20/Final-Project/raw/master/raw_data.json", '_blank');
+    var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Data/raw_data.json", '_blank');
     win.focus();
   }
 
   openCleanedCSV(){
-    var win = window.open("https://github.com/tgb20/Final-Project/raw/master/cleaned_data.csv", '_blank');
+    var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Data/cleaned_data.csv", '_blank');
     win.focus();
   }
 
