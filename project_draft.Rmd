@@ -115,7 +115,6 @@ summary(data.df$temp)
 ```{r}
 fit.weather <- lm(pressure~humidity, data=data.df)
 summary(fit.weather)
-ggplot(data = fit.weather)
 actual.scores <- as.data.frame(test.data$pressure)
 fit.predicted <- predict(fit.weather, actual.scores, interval = "predict")
 summary(fit.predicted)
