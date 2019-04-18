@@ -103,10 +103,7 @@ conf.matrix
 
 
 ```{r} 
-summary(data.df$temp)
 
-# plot(data.df$temp)
-# hist(data.df[,11])
 
 ```
 
@@ -115,13 +112,13 @@ summary(data.df$temp)
 ```{r}
 fit.weather <- lm(pressure~humidity, data=data.df)
 summary(fit.weather)
-actual.scores <- as.data.frame(test.data$pressure)
+actual.scores <- test.data$pressure
 fit.predicted <- predict(fit.weather, actual.scores, interval = "predict")
 summary(fit.predicted)
 
 fit2.weather <- lm(temp~., data = data.df)
 summary(fit2.weather)
-actual.scores2 <- as.data.frame(test.data$temp)
+actual.scores2 <- (test.data$temp)
 fit.predicted2 <- predict(fit2.weather, actual.scores2, interval = "predict")
 ```
 
@@ -132,7 +129,7 @@ weather.vec <- as.vector(data.df$temp)
 #remove outlier by averaging point before and after
 weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
 weather.ts <- ts(weather.vec, frequency = 8760)
-plot.ts(weather.ts)
+plot.ts(weather.ts, main = "Temperature Time Series Graph", ylab = "Temperature in Kelvin")
 
 ```
 
