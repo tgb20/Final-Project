@@ -78,7 +78,7 @@ normalize.it <- function(vec) {
     y
 }
     
-weather.lst <- lapply(data.df[ , 3:11], normalize.it)
+weather.lst <- lapply(data.df[ , c(3,4,5,8)], normalize.it)
 data.weather.normed <- data.frame(weather.lst)
 summary(data.weather.normed)
 
@@ -122,7 +122,7 @@ actual.scores2 <- (test.data$temp)
 fit.predicted2 <- predict(fit2.weather, actual.scores2, interval = "predict")
 ```
 
-#Time Series
+#Time Series 
 ```{r}
 library(ggplot2)
 weather.vec <- as.vector(data.df$temp)
@@ -131,6 +131,10 @@ weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
 weather.ts <- ts(weather.vec, frequency = 8760)
 plot.ts(weather.ts, main = "Temperature Time Series Graph", ylab = "Temperature in Kelvin")
 
+
+pressure.vec <- as.vector(data.df$pressure)
+pressure.ts <- ts(pressure.vec[7000:7100], frequency = 8760)
+plot.ts(pressure.ts, main = "Pressure Time Series Graph", ylab = "Pressure")
 ```
 
 
