@@ -10,6 +10,22 @@ with open('../Data/cleaned_data.csv', 'w') as csvfile:
         data = json.load(json_file)
         for p in data:
             weathertype = p["weather"][0]["main"]
+
+            if(weathertype == "Drizzle"):
+                weathertype = "Rain"
+            if(weathertype == "Dust"):
+                weathertype = "Clear"
+            if(weathertype == "Fog"):
+                weathertype = "Cloudy"
+            if(weathertype == "Haze"):
+                weathertype = "Cloudy"
+            if(weathertype == "Mist"):
+                weathertype = "Rain"
+            if(weathertype == "Smoke"):
+                weathertype = "Clear"
+
+
+
             temp = p["main"]["temp"]
             pressure = p["main"]["pressure"]
             humidity = p["main"]["humidity"]
