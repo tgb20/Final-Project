@@ -71,14 +71,14 @@ num.test.labels <- data.size*(1-train.size)
 
 
 data.df$weather <- as.factor(data.df$weathertype)
-levels(data.df$weathertype) <- c("Clear", "Cloudy", "Drizzle", "Dust", "Fog", "Haze", "Mist", "Rain", "Smoke", "Snow", "Thunderstorm")
+levels(data.df$weathertype) <- c("Clear", "Clouds", "Rain", "Snow", "Thunderstorm")
 
 normalize.it <- function(vec) {
     y <- (vec - min(vec))/(max(vec) - min(vec))
     y
 }
     
-weather.lst <- lapply(data.df[ , c(3,4,5,8)], normalize.it)
+weather.lst <- lapply(data.df[ , 3:8], normalize.it)
 data.weather.normed <- data.frame(weather.lst)
 summary(data.weather.normed)
 
@@ -91,7 +91,7 @@ test.data <- subset(data.weather.normed[test.row.nums, ])
 class.labels <- data.df$weathertype[train.row.nums]
 true.labels <- data.df$weathertype[test.row.nums]
 
-knn.predict <- knn(train.data, test.data, class.labels, k=11)
+knn.predict <- knn(train.data, test.data, class.labels, k=5)
 
 num.incorrect.labels <- sum(knn.predict != true.labels)
 misc.rate <- num.incorrect.labels/num.test.labels
@@ -131,10 +131,13 @@ weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
 weather.ts <- ts(weather.vec, frequency = 8760)
 plot.ts(weather.ts, main = "Temperature Time Series Graph", ylab = "Temperature in Kelvin")
 
+wind.vec <- as.vector(data.df$windspeed)
+#remove outlier by averaging point before and after
+#weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
+wind.ts <- ts(wind.vec, frequency = 8760)
+plot.ts(wind.ts, main = "Wind Speed Time Series Graph", ylab = "Wind Speed")
 
-pressure.vec <- as.vector(data.df$pressure)
-pressure.ts <- ts(pressure.vec[7000:7100], frequency = 8760)
-plot.ts(pressure.ts, main = "Pressure Time Series Graph", ylab = "Pressure")
+
 ```
 
 
