@@ -23,8 +23,8 @@ with open('../Data/cleaned_data.csv', 'w') as csvfile:
                 weathertype = "Rain"
             if(weathertype == "Smoke"):
                 weathertype = "Clear"
-
-
+            if(weathertype == "Cloudy"):
+                weathertype = "Clear"
 
             temp = p["main"]["temp"]
             pressure = p["main"]["pressure"]
