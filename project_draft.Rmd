@@ -70,15 +70,15 @@ train.size <- .80
 num.test.labels <- data.size*(1-train.size)
 
 
-data.df$weather <- as.factor(data.df$weather)
-levels(data.df$weather) <- c("Cloudy", "Sunny")
+data.df$weather <- as.factor(data.df$weathertype)
+levels(data.df$weathertype) <- c("Clear", "Cloudy", "Drizzle", "Dust", "Fog", "Haze", "Mist", "Rain", "Smoke", "Snow", "Thunderstorm")
 
 normalize.it <- function(vec) {
     y <- (vec - min(vec))/(max(vec) - min(vec))
     y
 }
     
-weather.lst <- lapply(data.df[ , 3:6], normalize.it)
+weather.lst <- lapply(data.df[ , c(3,4,5,8)], normalize.it)
 data.weather.normed <- data.frame(weather.lst)
 summary(data.weather.normed)
 
@@ -88,11 +88,10 @@ train.data <- subset(data.weather.normed[train.row.nums, ])
 test.row.nums <- setdiff(1:data.size, train.row.nums)
 test.data <- subset(data.weather.normed[test.row.nums, ])
 
-class.labels <- data.df$weather[train.row.nums]
-true.labels <- data.df$weather[test.row.nums]
+class.labels <- data.df$weathertype[train.row.nums]
+true.labels <- data.df$weathertype[test.row.nums]
 
-knn.predict <- knn(train.data, test.data, class.labels, k=2)
-
+knn.predict <- knn(train.data, test.data, class.labels, k=11)
 
 num.incorrect.labels <- sum(knn.predict != true.labels)
 misc.rate <- num.incorrect.labels/num.test.labels
@@ -104,35 +103,38 @@ conf.matrix
 
 
 ```{r} 
-data.df <- read.csv("cleaned_data.csv")
-summary(data.df)
-plot(data.df)
-data.df <- (na.omit(data.df$weathertype))
-k2 <- kmeans(data.df, centers = 11, nstart = 25)
+
+
 ```
 
 
 ## Linear Regression
 ```{r}
-fit.weather <- lm(pressure~humidity, data=data.df[,-1])
+fit.weather <- lm(pressure~humidity, data=data.df)
 summary(fit.weather)
-plot(fit.weather)
-actual.scores <- as.data.frame(test.data$pressure)
+actual.scores <- test.data$pressure
 fit.predicted <- predict(fit.weather, actual.scores, interval = "predict")
 summary(fit.predicted)
 
-fit2.weather <- lm(temp~., data = data.df[,-c(1,2)])
+fit2.weather <- lm(temp~., data = data.df)
 summary(fit2.weather)
-actual.scores2 <- as.data.frame(test.data$temp)
+actual.scores2 <- (test.data$temp)
 fit.predicted2 <- predict(fit2.weather, actual.scores2, interval = "predict")
 ```
 
-#Time Series
+#Time Series 
 ```{r}
-weather.vec <- scan("cleaned_data.csv")
-weather.ts <- ts(weather.vec, frequency = 12, start = c(2012, 2))
-plot(weather.ts)
+library(ggplot2)
+weather.vec <- as.vector(data.df$temp)
+#remove outlier by averaging point before and after
+weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
+weather.ts <- ts(weather.vec, frequency = 8760)
+plot.ts(weather.ts, main = "Temperature Time Series Graph", ylab = "Temperature in Kelvin")
 
+
+pressure.vec <- as.vector(data.df$pressure)
+pressure.ts <- ts(pressure.vec[7000:7100], frequency = 8760)
+plot.ts(pressure.ts, main = "Pressure Time Series Graph", ylab = "Pressure")
 ```
 
 
