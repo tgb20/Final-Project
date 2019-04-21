@@ -157,6 +157,7 @@ fit.humid <- lm(humidity~pressure+cloudcov, data = data.df)
 summary(fit.humid)
 actual.scores.humid <- test.data$humidity
 fit.predicted.humid <- predict(fit.humid, actual.scores.humid, interval = "predict")
+summary(fit.humid)
 ```
 
 #Time Series 
