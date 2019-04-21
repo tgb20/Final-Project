@@ -142,6 +142,7 @@ abline(0,1,lty=3) #Adds the x=y line, representing a random 50-50 prediction
 ## Linear Regression
 ```{r}
 fit.weather <- lm(pressure~humidity, data=data.df)
+fit.weather <- as.vector(fit.weather)
 summary(fit.weather)
 actual.scores <- test.data$pressure
 fit.predicted <- predict(fit.weather, actual.scores, interval = "predict")
@@ -149,7 +150,7 @@ summary(fit.predicted)
 
 fit2.weather <- lm(temp~., data = data.df)
 summary(fit2.weather)
-actual.scores2 <- (test.data$temp)
+actual.scores2 <- test.data$temp
 fit.predicted2 <- predict(fit2.weather, actual.scores2, interval = "predict")
 summary(fit.predicted2)
 
