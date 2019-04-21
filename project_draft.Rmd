@@ -101,9 +101,40 @@ conf.matrix <- table(knn.predict, true.labels)
 conf.matrix
 ```
 
-
+## Logistic Regression (an attempt)
 ```{r} 
+library(ROCR)
+humid.glm <- glm(humidity~pressure, data = data.df)
+humid.glm2 <- glm(humidity~pressure+cloudcov, data = data.df)
+summary(humid.glm)
+summary(humid.glm2)
 
+plot(humidity~pressure, data=data.df)
+plot(humidity~cloudcov, data=data.df)
+
+data.size<-nrow(data.df)
+train.size<-0.80
+
+set.seed(12345)
+
+train.row.nums<-sample(1:data.size, data.size*train.size, replace=FALSE)
+train.data<-subset(data.df[train.row.nums,])
+
+test.row.nums<-setdiff(1:data.size,train.row.nums)
+test.data<-subset(data.df[test.row.nums,])
+
+true.labels<-test.data[,1]
+
+mod<-glm(humidity~pressure,data=train.data)
+model.predictions<-predict(mod, newdata=test.data[,-1], type="response")
+
+# using model predictions from the previous call to predict
+pred<-prediction(model.predictions,true.labels)
+# tpr- true positive rate, frp- false positive rate
+perf<-performance(pred,'tpr','fpr')
+
+plot(perf,main="ROC")
+abline(0,1,lty=3) #Adds the x=y line, representing a random 50-50 prediction
 
 ```
 
@@ -120,6 +151,12 @@ fit2.weather <- lm(temp~., data = data.df)
 summary(fit2.weather)
 actual.scores2 <- (test.data$temp)
 fit.predicted2 <- predict(fit2.weather, actual.scores2, interval = "predict")
+summary(fit.predicted2)
+
+fit.humid <- lm(humidity~pressure+cloudcov, data = data.df)
+summary(fit.humid)
+actual.scores.humid <- test.data$humidity
+fit.predicted.humid <- predict(fit.humid, actual.scores.humid, interval = "predict")
 ```
 
 #Time Series 
