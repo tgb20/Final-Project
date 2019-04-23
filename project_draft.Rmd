@@ -71,14 +71,14 @@ num.test.labels <- data.size*(1-train.size)
 
 
 data.df$weather <- as.factor(data.df$weathertype)
-levels(data.df$weathertype) <- c("Clear", "Cloudy", "Drizzle", "Dust", "Fog", "Haze", "Mist", "Rain", "Smoke", "Snow", "Thunderstorm")
+levels(data.df$weathertype) <- c("Clear", "Clouds", "Rain", "Snow", "Thunderstorm")
 
 normalize.it <- function(vec) {
     y <- (vec - min(vec))/(max(vec) - min(vec))
     y
 }
     
-weather.lst <- lapply(data.df[ , c(3,4,5,8)], normalize.it)
+weather.lst <- lapply(data.df[ , 3:8], normalize.it)
 data.weather.normed <- data.frame(weather.lst)
 summary(data.weather.normed)
 
@@ -91,7 +91,7 @@ test.data <- subset(data.weather.normed[test.row.nums, ])
 class.labels <- data.df$weathertype[train.row.nums]
 true.labels <- data.df$weathertype[test.row.nums]
 
-knn.predict <- knn(train.data, test.data, class.labels, k=11)
+knn.predict <- knn(train.data, test.data, class.labels, k=5)
 
 num.incorrect.labels <- sum(knn.predict != true.labels)
 misc.rate <- num.incorrect.labels/num.test.labels
@@ -101,9 +101,40 @@ conf.matrix <- table(knn.predict, true.labels)
 conf.matrix
 ```
 
-
+## Logistic Regression (an attempt)
 ```{r} 
+library(ROCR)
+humid.glm <- glm(humidity~pressure, data = data.df)
+humid.glm2 <- glm(humidity~pressure+cloudcov, data = data.df)
+summary(humid.glm)
+summary(humid.glm2)
 
+plot(humidity~pressure, data=data.df)
+plot(humidity~cloudcov, data=data.df)
+
+data.size<-nrow(data.df)
+train.size<-0.80
+
+set.seed(12345)
+
+train.row.nums<-sample(1:data.size, data.size*train.size, replace=FALSE)
+train.data<-subset(data.df[train.row.nums,])
+
+test.row.nums<-setdiff(1:data.size,train.row.nums)
+test.data<-subset(data.df[test.row.nums,])
+
+true.labels<-test.data[,1]
+
+mod<-glm(humidity~pressure,data=train.data)
+model.predictions<-predict(mod, newdata=test.data[,-1], type="response")
+
+# using model predictions from the previous call to predict
+pred<-prediction(model.predictions,true.labels)
+# tpr- true positive rate, frp- false positive rate
+perf<-performance(pred,'tpr','fpr')
+
+plot(perf,main="ROC")
+abline(0,1,lty=3) #Adds the x=y line, representing a random 50-50 prediction
 
 ```
 
@@ -111,6 +142,7 @@ conf.matrix
 ## Linear Regression
 ```{r}
 fit.weather <- lm(pressure~humidity, data=data.df)
+fit.weather <- as.vector(fit.weather)
 summary(fit.weather)
 actual.scores <- test.data$pressure
 fit.predicted <- predict(fit.weather, actual.scores, interval = "predict")
@@ -118,8 +150,15 @@ summary(fit.predicted)
 
 fit2.weather <- lm(temp~., data = data.df)
 summary(fit2.weather)
-actual.scores2 <- (test.data$temp)
+actual.scores2 <- test.data$temp
 fit.predicted2 <- predict(fit2.weather, actual.scores2, interval = "predict")
+summary(fit.predicted2)
+
+fit.humid <- lm(humidity~pressure+cloudcov, data = data.df)
+summary(fit.humid)
+actual.scores.humid <- test.data$humidity
+fit.predicted.humid <- predict(fit.humid, actual.scores.humid, interval = "predict")
+summary(fit.humid)
 ```
 
 #Time Series 
@@ -131,10 +170,13 @@ weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
 weather.ts <- ts(weather.vec, frequency = 8760)
 plot.ts(weather.ts, main = "Temperature Time Series Graph", ylab = "Temperature in Kelvin")
 
+wind.vec <- as.vector(data.df$windspeed)
+#remove outlier by averaging point before and after
+#weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
+wind.ts <- ts(wind.vec, frequency = 8760)
+plot.ts(wind.ts, main = "Wind Speed Time Series Graph", ylab = "Wind Speed")
 
-pressure.vec <- as.vector(data.df$pressure)
-pressure.ts <- ts(pressure.vec[7000:7100], frequency = 8760)
-plot.ts(pressure.ts, main = "Pressure Time Series Graph", ylab = "Pressure")
+
 ```
 
 
