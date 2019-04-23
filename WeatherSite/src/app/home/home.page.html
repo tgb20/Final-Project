@@ -27,181 +27,202 @@
       <ion-icon name="help"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <div class="ion-padding">
-    <ion-slides #slides (ionSlideWillChange)="segment=''+slides.getActiveIndex()" pager="false" [options]="slideOpts">
+  <ion-slides #slides (ionSlideWillChange)="segment=''+slides.getActiveIndex()" pager="false" [options]="slideOpts">
+    <ion-slide>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle color="primary">OpenWeatherMap</ion-card-subtitle>
+          <ion-card-title>5 Day Forecast for {{city}}, {{country}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Predictions provided by OpenWeatherMap
+          <br>
+          <ion-grid>
+            <ion-row>
+              <ion-col *ngFor="let pred of owmPreds">
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-subtitle>{{pred.dt}}</ion-card-subtitle>
+                    <ion-card-title>{{pred.dow}}</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    <ion-chip color={{pred.color}}>
+                      <ion-icon name={{pred.icon}}></ion-icon>
+                      <ion-label>{{pred.weather}}</ion-label>
+                    </ion-chip>
+                    <br>
+                    <ion-chip>
+                      <ion-icon name="thermometer"></ion-icon>
+                      <ion-label>{{pred.temp}}</ion-label>
+                    </ion-chip>
+                    <br>
+                    <ion-chip>
+                      <ion-icon name="arrow-down"></ion-icon>
+                      <ion-label>{{pred.press}}</ion-label>
+                    </ion-chip>
+                    <br>
+                    <ion-chip>
+                      <ion-icon name="water"></ion-icon>
+                      <ion-label>{{pred.humd}}</ion-label>
+                    </ion-chip>
+                    <br>
+                    <ion-chip>
+                      <ion-icon name="flag"></ion-icon>
+                      <ion-label>{{pred.wind}}</ion-label>
+                    </ion-chip>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+        <ion-fab vertical="top" horizontal="end" slot="fixed">
+          <ion-fab-button (click)="openOpenWeatherMap()" size="small">
+            <ion-icon name="link"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </ion-card>
+    </ion-slide>
+    <ion-slide>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Introduction</ion-card-title>
+          <ion-card-subtitle>Data was sourced from OpenWeatherMap</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          This page will serve to provide validation for our models and further insight into the data collected.
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+    <ion-slide>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Data Files</ion-card-title>
+          <ion-card-subtitle>All files we used to build our models</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col text-center>
+                    <ion-label>Raw JSON</ion-label>
+                  </ion-col>
+                  <ion-col text-center>
+                    Raw JSON file we aquired from OpenWeatherMap
+                  </ion-col>
+                  <ion-col text-center>
+                    <ion-button shape="round" (click)="openRawJSON()">
+                      <ion-icon name="download"></ion-icon>
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col text-center>
+                    <ion-label>Fake CSV</ion-label>
+                  </ion-col>
+                  <ion-col text-center>
+                    A fake CSV dataset used for building our model blueprints.
+                  </ion-col>
+                  <ion-col text-center>
+                    <ion-button shape="round" (click)="openFakeCSV()">
+                      <ion-icon name="download"></ion-icon>
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col text-center>
+                    <ion-label>Cleaned CSV</ion-label>
+                  </ion-col>
+                  <ion-col text-center>
+                    CSV version of our full data set with unused data removed and converted to CSV.
+                  </ion-col>
+                  <ion-col text-center>
+                    <ion-button shape="round" (click)="openCleanedCSV()">
+                      <ion-icon name="download"></ion-icon>
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col text-center>
+                    <ion-label>Compressed CSV</ion-label>
+                  </ion-col>
+                  <ion-col text-center>
+                    CSV dataset used for graphics on the website.
+                  </ion-col>
+                  <ion-col text-center>
+                    <ion-button shape="round" (click)="openCompressedCSV()">
+                      <ion-icon name="download"></ion-icon>
+                    </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>
+          Doughnut Chart
+        </ion-card-header>
+        <ion-card-content>
+          <canvas #doughnutCanvas></canvas>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+    <ion-slide>
       <ion-slide>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-subtitle color="primary">OpenWeatherMap</ion-card-subtitle>
-            <ion-card-title>5 Day Forecast for {{city}}, {{country}}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            Predictions provided by OpenWeatherMap
-            <br>
-            <ion-grid>
-              <ion-row>
-                <ion-col *ngFor="let pred of owmPreds">
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-subtitle>{{pred.dt}}</ion-card-subtitle>
-                      <ion-card-title>{{pred.dow}}</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      <ion-chip color={{pred.color}}>
-                        <ion-icon name={{pred.icon}}></ion-icon>
-                        <ion-label>{{pred.weather}}</ion-label>
-                      </ion-chip>
-                      <br>
-                      <ion-chip>
-                        <ion-icon name="thermometer"></ion-icon>
-                        <ion-label>{{pred.temp}}</ion-label>
-                      </ion-chip>
-                      <br>
-                      <ion-chip>
-                        <ion-icon name="arrow-down"></ion-icon>
-                        <ion-label>{{pred.press}}</ion-label>
-                      </ion-chip>
-                      <br>
-                      <ion-chip>
-                        <ion-icon name="water"></ion-icon>
-                        <ion-label>{{pred.humd}}</ion-label>
-                      </ion-chip>
-                      <br>
-                      <ion-chip>
-                        <ion-icon name="flag"></ion-icon>
-                        <ion-label>{{pred.wind}}</ion-label>
-                      </ion-chip>
-                    </ion-card-content>
-                  </ion-card>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-card-content>
-          <ion-fab vertical="top" horizontal="end" slot="fixed">
-            <ion-fab-button (click)="openOpenWeatherMap()" size="small">
-              <ion-icon name="link"></ion-icon>
-            </ion-fab-button>
-          </ion-fab>
-        </ion-card>
+        <ion-grid>
+          <ion-row>
+            <ion-col text-center>
+              <ion-card>
+                <ion-card-header>
+                  <ion-card-title>Documentation</ion-card-title>
+                  <ion-card-subtitle>Our project is hosted on GitHub</ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                  <br>
+                  <br>
+                  <ion-fab vertical="center" horizontal="center">
+                    <ion-fab-button (click)="openGithub()" color="medium" size="small">
+                      <ion-icon name="logo-github"></ion-icon>
+                    </ion-fab-button>
+                  </ion-fab>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col text-center>
+              <ion-card>
+                <ion-card-header>
+                  <ion-card-title>Sources</ion-card-title>
+                  <ion-card-subtitle>All data was collected from OpenWeatherMap</ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                  <br>
+                  <br>
+                  <ion-fab vertical="center" horizontal="center">
+                    <ion-fab-button (click)="openOpenWeatherMap()" color="medium" size="small">
+                      <ion-icon name="globe"></ion-icon>
+                    </ion-fab-button>
+                  </ion-fab>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-slide>
-      <ion-slide>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Introduction</ion-card-title>
-            <ion-card-subtitle>Data was sourced from OpenWeatherMap</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            This page will serve to provide validation for our models and further insight into the data collected.
-          </ion-card-content>
-        </ion-card>
-      </ion-slide>
-      <ion-slide>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Data Files</ion-card-title>
-            <ion-card-subtitle>All files we used to build our models</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-list>
-              <ion-item>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col text-center>
-                      <ion-label>Raw JSON</ion-label>
-                    </ion-col>
-                    <ion-col text-center>
-                      Raw JSON file we aquired from OpenWeatherMap
-                    </ion-col>
-                    <ion-col text-center>
-                        <ion-button shape="round" (click)="openRawJSON()">
-                            <ion-icon name="download"></ion-icon>
-                        </ion-button>
-                      </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-item>
-              <ion-item>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col text-center>
-                      <ion-label>Fake CSV</ion-label>
-                    </ion-col>
-                    <ion-col text-center>
-                      A fake CSV dataset used for building our model blueprints.
-                    </ion-col>
-                    <ion-col text-center>
-                      <ion-button shape="round" (click)="openFakeCSV()">
-                          <ion-icon name="download"></ion-icon>
-                      </ion-button>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-item>
-              <ion-item>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col text-center>
-                      <ion-label>Cleaned CSV</ion-label>
-                    </ion-col>
-                    <ion-col text-center>
-                      CSV version of our full data set with unused data removed and converted to CSV.
-                    </ion-col>
-                    <ion-col text-center>
-                        <ion-button shape="round" (click)="openCleanedCSV()">
-                            <ion-icon name="download"></ion-icon>
-                        </ion-button>
-                      </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-item>
-              <ion-item>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col text-center>
-                      <ion-label>Compressed CSV</ion-label>
-                    </ion-col>
-                    <ion-col text-center>
-                      CSV dataset used for graphics on the website.
-                    </ion-col>
-                    <ion-col text-center>
-                      <ion-button shape="round" (click)="openCompressedCSV()">
-                          <ion-icon name="download"></ion-icon>
-                      </ion-button>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-item>
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
-        <ion-card>
-          <ion-card-header>
-            Doughnut Chart
-          </ion-card-header>
-          <ion-card-content>
-            <canvas #doughnutCanvas></canvas>
-          </ion-card-content>
-        </ion-card>
-      </ion-slide>
-      <ion-slide>
-        <ion-slide>
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Documentation</ion-card-title>
-              <ion-card-subtitle>Our project is hosted on GitHub</ion-card-subtitle>
-            </ion-card-header>
-            <ion-card-content>
-              <br>
-              <br>
-              <ion-fab vertical="center" horizontal="center">
-                <ion-fab-button (click)="openGithub()" color="medium" size="small">
-                  <ion-icon name="logo-github"></ion-icon>
-                </ion-fab-button>
-              </ion-fab>
-            </ion-card-content>
-          </ion-card>
-        </ion-slide>
-      </ion-slide>
-    </ion-slides>
-  </div>
+    </ion-slide>
+  </ion-slides>
 </ion-content>
