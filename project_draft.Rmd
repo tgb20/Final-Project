@@ -145,19 +145,19 @@ fit.weather <- lm(pressure~humidity, data=data.df)
 fit.weather <- as.vector(fit.weather)
 summary(fit.weather)
 actual.scores <- test.data$pressure
-fit.predicted <- predict(fit.weather, actual.scores, interval = "predict")
+fit.predicted <- predict(fit.weather, test.data, interval = "predict")
 summary(fit.predicted)
 
 fit2.weather <- lm(temp~., data = data.df)
 summary(fit2.weather)
 actual.scores2 <- test.data$temp
-fit.predicted2 <- predict(fit2.weather, actual.scores2, interval = "predict")
+fit.predicted2 <- predict(fit2.weather, test.data, interval = "predict")
 summary(fit.predicted2)
 
 fit.humid <- lm(humidity~pressure+cloudcov, data = data.df)
 summary(fit.humid)
 actual.scores.humid <- test.data$humidity
-fit.predicted.humid <- predict(fit.humid, actual.scores.humid, interval = "predict")
+fit.predicted.humid <- predict(fit.humid, test.data, interval = "predict")
 summary(fit.humid)
 ```
 
