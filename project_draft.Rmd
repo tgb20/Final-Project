@@ -150,7 +150,7 @@ fit.predicted <- predict(fit.weather, test.data, interval = "predict")
 summary(fit.predicted)
 
 fit2.weather <- lm(temp~., data = data.df)
-fit2.weather <- as.vector(fit.weather)
+fit2.weather <- as.vector(fit2.weather)
 fit2.weather[3864,] <- (fit.weather[3863,]+fit.weather[3865,])/2
 summary(fit2.weather)
 actual.scores2 <- test.data$temp
