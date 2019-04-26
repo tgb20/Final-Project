@@ -171,19 +171,45 @@ summary(fit.humid)
 #Time Series 
 ```{r}
 library(ggplot2)
+library(fracdiff)
+library(forecast)
 weather.vec <- as.vector(data.df$temp)
 #remove outlier by averaging point before and after
 weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
 weather.ts <- ts(weather.vec, frequency = 8760)
 plot.ts(weather.ts, main = "Temperature Time Series Graph", ylab = "Temperature in Kelvin")
+#fit.test <- auto.arima(weather.ts)
+weather.pred <- HoltWinters(weather.ts, beta = FALSE, gamma = FALSE)
+#plot(forecast(fit.test, h=20))
+#fcast <- forecast(fit.test)
+#predict.weather <- predict(fit.test, n.ahead = 120)
+weather.pred2 <- forecast:::forecast.HoltWinters(weather.pred, h=120)
+forecast:::plot.forecast(weather.pred2)
+
 
 wind.vec <- as.vector(data.df$windspeed)
 #remove outlier by averaging point before and after
 #weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
 wind.ts <- ts(wind.vec, frequency = 8760)
 plot.ts(wind.ts, main = "Wind Speed Time Series Graph", ylab = "Wind Speed")
+wind.pred <- HoltWinters(wind.ts, beta = FALSE, gamma = FALSE)
+wind.pred2 <- forecast:::forecast.HoltWinters(wind.pred, h = 120)
+forecast:::plot.forecast(wind.pred2)
 
+pressure.vec <- as.vector(data.df$pressure)
+pressure.vec[1097:1098] <- (pressure.vec[1096]+pressure.vec[1099])/2
+pressure.vec[2417:2418] <- (pressure.vec[2416]+pressure.vec[2419])/2
+pressure.vec[2587:2588] <- (pressure.vec[2586]+pressure.vec[2589])/2
+pressure.ts <- ts(pressure.vec, frequency = 8760)
+press.pred <- HoltWinters(pressure.ts, beta = FALSE, gamma = FALSE)
+press.pred2 <- forecast:::forecast.HoltWinters(press.pred, h = 120)
+forecast:::plot.forecast(press.pred2)
 
+humid.vec <- as.vector(data.df$humid)
+humid.ts <- ts(humid.vec, frequency = 8760)
+humid.pred <- HoltWinters(humid.ts, beta = FALSE, gamma = FALSE)
+humid.pred2 <- forecast:::forecast.HoltWinters(humid.pred, h = 120)
+forecast:::plot.forecast(humid.pred2)
 ```
 
 
