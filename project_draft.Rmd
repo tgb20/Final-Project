@@ -142,26 +142,29 @@ abline(0,1,lty=3) #Adds the x=y line, representing a random 50-50 prediction
 ## Linear Regression
 ```{r}
 fit.weather <- lm(pressure~humidity, data=data.df)
-fit.weather <- as.vector(fit.weather)
+#fit.weather <- as.vector(fit.weather)
 fit.weather[2587,] <- (fit.weather[2586,]+fit.weather[2588,])/2
-summary(fit.weather)
-actual.scores <- test.data$pressure
-fit.predicted <- predict(fit.weather, test.data, interval = "predict")
+#summary(fit.weather)
+test.data.press <- test.data[c("humidity")]
+actual.scores <- test.data.pressure
+fit.predicted <- predict(fit.weather, test.data.press, interval = "predict")
 summary(fit.predicted)
 
 fit2.weather <- lm(temp~., data = data.df)
-fit2.weather <- as.vector(fit2.weather)
+#fit2.weather <- as.vector(fit2.weather)
 fit2.weather[3864,] <- (fit.weather[3863,]+fit.weather[3865,])/2
-summary(fit2.weather)
+#summary(fit2.weather)
+test.data.temp <- test.data[c("temp", "pressure", "windspeed", "winddeg", "cloudcov")]
 actual.scores2 <- test.data$temp
-fit.predicted2 <- predict(fit2.weather, test.data, interval = "predict")
+fit.predicted2 <- predict(fit2.weather, test.data.temp, interval = "predict")
 summary(fit.predicted2)
 
 fit.humid <- lm(humidity~pressure+cloudcov, data = data.df)
-fit.humid <- as.vector(fit.humid)
+#fit.humid <- as.vector(fit.humid)
 summary(fit.humid)
+test.data.humid <- test.data[c("pressure", "humidity")]
 actual.scores.humid <- test.data$humidity
-fit.predicted.humid <- predict(fit.humid, test.data, interval = "predict")
+fit.predicted.humid <- predict(fit.humid, test.data.humid, interval = "predict")
 summary(fit.humid)
 ```
 
