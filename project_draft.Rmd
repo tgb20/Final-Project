@@ -186,6 +186,7 @@ forecast:::plot.forecast(weather.pred2)
 hist(residuals(weather.pred2))
 ```
  
+
 ```{r} 
 #PREDICT WINDSPEED
 wind.vec <- as.vector(data.df$windspeed)
