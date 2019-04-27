@@ -168,6 +168,7 @@ fit.predicted.humid <- predict(fit.humid, test.data.humid, interval = "predict")
 summary(fit.humid)
 ```
 
+
 #Time Series 
 ```{r}
 library(ggplot2)
@@ -182,13 +183,6 @@ weather.pred <- HoltWinters(weather.ts, beta = FALSE, gamma = FALSE)
 weather.pred2 <- forecast:::forecast.HoltWinters(weather.pred, h=120)
 forecast:::plot.forecast(weather.pred2)
 hist(residuals(weather.pred2))
-true.label.temp <- data.df$temp[test.row.nums]
-num.incorrect.labels.temp <- sum(weather.pred2 != true.labels.temp)
-misc.rate.temp <- num.incorrect.labels.temp/num.test.labels
-misc.rate.temp
-
-conf.matrix <- table(knn.predict, true.labels)
-conf.matrix
 
 wind.vec <- as.vector(data.df$windspeed)
 #remove outlier by averaging point before and after
