@@ -173,7 +173,6 @@ summary(fit.humid)
 #Time Series 
 ```{r}
 library(ggplot2)
-library(fracdiff)
 library(forecast)
 #PREDICT TEMPERATURE
 weather.vec <- as.vector(data.df$temp)
