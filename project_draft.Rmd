@@ -15,48 +15,6 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-## KNN with fake data
-```{r}
-library(ROCR)
-library(class)
-
-data.df <- read.csv("fake_data.csv")
-set.seed(12345)
-data.size <- nrow(data.df)
-train.size <- .80
-num.test.labels <- data.size*(1-train.size)
-
-
-data.df$weather <- as.factor(data.df$weather)
-levels(data.df$weather) <- c("Cloudy", "Sunny")
-
-normalize.it <- function(vec) {
-    y <- (vec - min(vec))/(max(vec) - min(vec))
-    y
-}
-    
-weather.lst <- lapply(data.df[ , 3:6], normalize.it)
-data.weather.normed <- data.frame(weather.lst)
-summary(data.weather.normed)
-
-train.row.nums <- sample(1:data.size, data.size*train.size, replace = FALSE)
-train.data <- subset(data.weather.normed[train.row.nums, ])
-
-test.row.nums <- setdiff(1:data.size, train.row.nums)
-test.data <- subset(data.weather.normed[test.row.nums, ])
-
-class.labels <- data.df$weather[train.row.nums]
-true.labels <- data.df$weather[test.row.nums]
-
-knn.predict <- knn(train.data, test.data, class.labels, k=2)
-
-num.incorrect.labels <- sum(knn.predict != true.labels)
-misc.rate <- num.incorrect.labels/num.test.labels
-misc.rate
-
-conf.matrix <- table(knn.predict, true.labels)
-conf.matrix
-```
 
 
 ## RUN THIS BEFORE ANYTHING (initialization of data)
@@ -108,67 +66,23 @@ conf.matrix
 ```
 
 
-## Logistic Regression (delete eventually)
-```{r} 
-library(ROCR)
-humid.glm <- glm(humidity~pressure, data = data.df)
-humid.glm2 <- glm(humidity~pressure+cloudcov, data = data.df)
-summary(humid.glm)
-summary(humid.glm2)
-
-plot(humidity~pressure, data=data.df)
-plot(humidity~cloudcov, data=data.df)
-
-data.size<-nrow(data.df)
-train.size<-0.80
-
-set.seed(12345)
-
-train.row.nums<-sample(1:data.size, data.size*train.size, replace=FALSE)
-train.data<-subset(data.df[train.row.nums,])
-
-test.row.nums<-setdiff(1:data.size,train.row.nums)
-test.data<-subset(data.df[test.row.nums,])
-
-true.labels<-test.data[,1]
-
-mod<-glm(humidity~pressure,data=train.data)
-model.predictions<-predict(mod, newdata=test.data[,-1], type="response")
-
-# using model predictions from the previous call to predict
-pred<-prediction(model.predictions,true.labels)
-# tpr- true positive rate, frp- false positive rate
-perf<-performance(pred,'tpr','fpr')
-
-plot(perf,main="ROC")
-abline(0,1,lty=3) #Adds the x=y line, representing a random 50-50 prediction
-
-```
-
-
-## Linear Regression 
+## K-means
 ```{r}
-test.data[2587:2588] <- (test.data[2586]+test.data[2588])/2
-fit.weather <- lm(pressure~humidity, data=test.data)
-actual.scores <- test.data$pressure
-fit.predicted <- predict(fit.weather, test.data.press, interval = "predict")
-summary(fit.predicted)
+library(fpc)
+library(flexclust)
+set.seed(12345)
+fit.weathertest <- kmeans(data.df[,3:8], 5, nstart=25)
+cont.table <- table(data.df$weathertype, fit.weathertest$cluster)
+cont.table
+chisq.test(cont.table)
+newdf <- data.frame("temp" = c(284.415), "pressure"= c(1017.05), "humididty"= c(83), "windspeed" = c(2.71), "winddeg" = c(157.159), "cloudcov" = c(100))
 
+clusterresults <- kcca(data.df[ ,3:8], k = 5)
+barplot(clusterresults)
+predclus <- predict(clusterresults, newdf)
 
-fit2.weather <- lm(temp~., data = data.df)
-fit2.weather[3864,] <- (fit.weather[3863,]+fit.weather[3865,])/2
-test.data.temp <- test.data[c("temp", "pressure", "windspeed", "winddeg", "cloudcov")]
-actual.scores2 <- test.data$temp
-fit.predicted2 <- predict(fit2.weather, test.data.temp, interval = "predict")
-summary(fit.predicted2)
-
-fit.humid <- lm(humidity~pressure+cloudcov, data = data.df)
-test.data.humid <- test.data[c("pressure", "humidity")]
-actual.scores.humid <- test.data$humidity
-fit.predicted.humid <- predict(fit.humid, test.data.humid, interval = "predict")
-summary(fit.humid)
+clusters(clusterresults, data.df [,3:8])
 ```
-
 
 #Time Series 
 ```{r}
@@ -178,7 +92,9 @@ library(forecast)
 weather.vec <- as.vector(data.df$temp)
 #remove outlier by averaging point before and after
 weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
-weather.ts <- ts(weather.vec, frequency = 8760)
+start <- 
+end <- 
+weather.ts <- ts(weather.vec, frequency = 8760, start = start, end = end)
 plot.ts(weather.ts, main = "Temperature Time Series Graph", ylab = "Temperature in Kelvin")
 weather.pred <- HoltWinters(weather.ts, beta = FALSE, gamma = FALSE)
 weather.pred2 <- forecast:::forecast.HoltWinters(weather.pred, h=120)
