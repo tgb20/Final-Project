@@ -15,8 +15,8 @@ export class HomePage {
 
   visitedDays:any[] = [];
 
-  @ViewChild('doughnutCanvas') doughnutCanvas;
-  doughnutChart: any;
+  @ViewChild('radarCanvas') radarCanvas;
+  radarChart: any;
 
   constructor(private http: HttpClient) {
   }
@@ -24,31 +24,41 @@ export class HomePage {
   ngOnInit() {
     this.getOpenWeatherMapData();
 
-    this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
+    this.radarChart = new Chart(this.radarCanvas.nativeElement, {
 
-      type: 'doughnut',
+      type: 'radar',
       data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          labels: ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019"],
           datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3],
+              label: 'Clear',
+              data: [1096, 3685, 3445, 3274, 3726, 3429, 3098, 728],
               backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
+                  'rgba(255,206,0, 0.1)'
               ],
-              hoverBackgroundColor: [
-                  "#FF6384",
-                  "#36A2EB",
-                  "#FFCE56",
-                  "#FF6384",
-                  "#36A2EB",
-                  "#FFCE56"
-              ]
-          }]
+              borderColor: [
+                'rgba(255,206,0, 0.1)'
+            ]
+          },
+          {
+            label: 'Clouds',
+            data: [477, 2825, 2707, 2409, 2587, 2314, 2555, 1159],
+            backgroundColor: [
+                'rgba(152,154,162, 0.1)'
+            ],
+            bordorColor: [
+              'rgba(152,154,162, 0.1)'
+          ]
+        },
+        {
+          label: 'Snow',
+          data: [70, 188, 60, 514, 232, 314, 357, 155],
+          backgroundColor: [
+              'rgba(112,209,232, 0.1)'
+          ],
+          bordorColor: [
+            'rgba(112,209,232, 0.1)'
+        ]
+      }]
       }
 
   });
@@ -72,6 +82,21 @@ export class HomePage {
 
   openRawJSON(){
     var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Data/raw_data.json", '_blank');
+    win.focus();
+  }
+  
+  openDataCleaner(){
+    var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Python Scripts/dataCleaner.py", '_blank');
+    win.focus();
+  }
+
+  openDataCompressor(){
+    var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Python Scripts/dataCompressor.py", '_blank');
+    win.focus();
+  }
+
+  openDataGenerator(){
+    var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Python Scripts/dataGenerator.py", '_blank');
     win.focus();
   }
 

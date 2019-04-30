@@ -20,8 +20,5 @@ with open('../Data/compressed_data.csv', 'w') as csvfile:
             cloudcov = p["clouds"]["all"]
             dt = p["dt"]
             dtiso = p["dt_iso"]
-
             writer.writerow({'id': pID, 'weathertype': weathertype, 'temp': temp, 'pressure': pressure, 'humidity': humidity, 'mintemp': mintemp, 'maxtemp': maxtemp, 'windspeed': windspeed,'winddeg': winddeg, 'cloudcov': cloudcov, 'dt': dt, 'dtiso': dtiso})
             pID += 1
-            
-        
