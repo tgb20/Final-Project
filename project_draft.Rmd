@@ -84,11 +84,14 @@ predclus <- predict(clusterresults, newdf)
 clusters(clusterresults, data.df [,3:8])
 ```
 
+
 #Time Series 
 ```{r}
+#PREDICT TEMPERATURE
+
 library(ggplot2)
 library(forecast)
-#PREDICT TEMPERATURE
+
 weather.vec <- as.vector(data.df$temp)
 #remove outlier by averaging point before and after
 weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
@@ -119,12 +122,13 @@ weather.forecast2
 #forecast:::plot.forecast(weather.pred2)
 #hist(residuals(weather.pred2))
 
-
+data.df$temp[dateRow:dateRow+120]
 ```
  
 
 ```{r} 
 #PREDICT WINDSPEED
+
 wind.vec <- as.vector(data.df$windspeed)
 #remove outlier by averaging point before and after
 #weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
