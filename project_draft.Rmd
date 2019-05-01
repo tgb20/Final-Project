@@ -92,14 +92,34 @@ library(forecast)
 weather.vec <- as.vector(data.df$temp)
 #remove outlier by averaging point before and after
 weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
-start <- 
-end <- 
+start <- c(2012,10,1,14)
+end <- c(2019,4,16,0)
 weather.ts <- ts(weather.vec, frequency = 8760, start = start, end = end)
 plot.ts(weather.ts, main = "Temperature Time Series Graph", ylab = "Temperature in Kelvin")
-weather.pred <- HoltWinters(weather.ts, beta = FALSE, gamma = FALSE)
-weather.pred2 <- forecast:::forecast.HoltWinters(weather.pred, h=120)
-forecast:::plot.forecast(weather.pred2)
-hist(residuals(weather.pred2))
+weather.pred <- HoltWinters(weather.ts)
+weather.forecast <- forecast(weather.pred, h=120)
+plot(weather.forecast)
+subset.ts <- window(weather.ts, start = 2013.5, end = 2013.6)
+plot.ts(subset.ts)
+
+calcDate <- "2014-10-01 00:00:00 +0000 UTC"
+dateRow <- which(data.df$dtiso == calcDate)
+dataSubsetToDate <- data.df[1:dateRow,]
+subWeather.vec <- as.vector(dataSubsetToDate$temp)
+end <- c(2014,10,1,0)
+newWeather.ts <- ts(subWeather.vec, frequency = 8760, start = start, end = end)
+plot.ts(newWeather.ts)
+weather.pred2 <- HoltWinters(newWeather.ts)
+weather.forecast2 <- forecast(weather.pred2, h=120)
+plot(weather.forecast2)
+weather.forecast2
+
+data.df[which(data.df$dtiso == "2012-10-03 17:00:00 +0000 UTC"),]$weathertype
+#weather.pred2 <- forecast:::forecast.HoltWinters(weather.pred, h=120)
+#forecast:::plot.forecast(weather.pred2)
+#hist(residuals(weather.pred2))
+
+
 ```
  
 
