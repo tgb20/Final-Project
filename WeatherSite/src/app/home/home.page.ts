@@ -13,10 +13,13 @@ export class HomePage {
   country: string;
   owmPreds: any[] = [];
   ourPred: any[] = [];
+  historyPreds: any[] = [];
 
   visitedDays: any[] = [];
 
   @ViewChild('radarCanvas') radarCanvas;
+  @ViewChild('dateTime') dateTime;
+
   radarChart: any;
 
   constructor(private http: HttpClient) {
@@ -24,6 +27,7 @@ export class HomePage {
 
   ngOnInit() {
     this.getRealTimeData();
+    this.getHistoricalData();
 
     this.radarChart = new Chart(this.radarCanvas.nativeElement, {
 
@@ -146,6 +150,69 @@ export class HomePage {
     win.focus();
   }
 
+  getHistoricalData() {
+    console.log(this.dateTime.value);
+
+    this.historyPreds = [];
+
+    var sDateTime = this.dateTime.value.toString().split("-");
+    var year = sDateTime[0];
+    var month = sDateTime[1];
+    var sDay = sDateTime[2].split("T");
+    var day = sDay[0];
+
+    this.http.get('http://71.232.77.6:8000/getHistory?year=' + year + '&month=' + month + '&day=' + day).subscribe((response) => {
+      let jsonString = JSON.parse(JSON.stringify(response));
+      var i;
+      for (i = 0; i < jsonString.hTypes.length; i++) {
+
+        var icon = "sunny";
+        var color = "primary";
+
+        var weather = jsonString.hTypes[i];
+
+        switch (weather) {
+          case "Clear":
+            icon = "sunny";
+            color = "warning";
+            break;
+          case "Clouds":
+            icon = "partly-sunny";
+            color = "medium";
+            break;
+          case "Drizzle":
+            icon = "rainy";
+            color = "primary";
+            break;
+          case "Rain":
+            icon = "rainy";
+            color = "primary";
+            break;
+          case "Thunderstorm":
+            icon = "thunderstorm";
+            color = "danger";
+            break;
+          case "Snow":
+            color = "secondary"
+            icon = "snow";
+            break;
+          default:
+            icon = "snow";
+            break;
+        }
+
+        var temp = "" + ((9.0 / 5.0) * (jsonString.hTemps[i] - 273) + 32).toFixed(2) + "° F";
+        var humd = jsonString.hHumidity[i] + "%";
+        var press = jsonString.hPressure[i].toFixed(2) + " hPa";
+        var wind = (jsonString.hWindspeed[0] * 2.23694).toFixed(2) + " mph";
+
+        var jsonPred = '{"dt": "' + month + "/" + day + "/" + year + '", "temp": "' + temp + '", "humd":"' + humd + '", "press":"' + press + '", "wind":"' + wind + '", "weather":"' + weather + '", "icon":"' + icon + '", "color":"' + color + '"}';
+        this.historyPreds.push(JSON.parse(jsonPred));
+      }
+    });
+
+  }
+
   getRealTimeData() {
 
 
@@ -160,7 +227,6 @@ export class HomePage {
     this.http.get('https://api.openweathermap.org/data/2.5/forecast?q=Boston&APPID=2efe065bf1aaf366c8aa78532ce3244a').subscribe((response) => {
 
       let jsonString = JSON.parse(JSON.stringify(response));
-      console.log(jsonString)
       this.city = jsonString.city.name;
       this.country = jsonString.city.country;
       jsonString.list.forEach(pred => {
@@ -249,11 +315,11 @@ export class HomePage {
               break;
           }
 
-          var jsonPred = '{"dt": "' + month + "/" + day + "/" + year +'", "temp": "' + temp + '", "humd":"' + humd + '", "press":"' + press + '", "wind":"' + wind + '", "weather":"' + weather + '", "dow":"' + dow + '", "icon":"' + icon + '", "color":"' + color + '"}';
+          var jsonPred = '{"dt": "' + month + "/" + day + "/" + year + '", "temp": "' + temp + '", "humd":"' + humd + '", "press":"' + press + '", "wind":"' + wind + '", "weather":"' + weather + '", "dow":"' + dow + '", "icon":"' + icon + '", "color":"' + color + '"}';
           this.owmPreds.push(JSON.parse(jsonPred));
         }
       });
-      this.http.get('http://71.232.77.6:8000/getKNN?temp=' + aTemp + '&pressure=' + aPressure + '&humidity=' + aPressure + '&windspeed=' + aWindSpeed + '&winddeg=' + aWindDeg + '&cloudcov=' + aCloudCov).subscribe((response) => {
+      this.http.get('http://71.232.77.6:8000/getKNN?temp=' + aTemp + '&pressure=' + aPressure + '&humidity=' + aHumidity + '&windspeed=' + aWindSpeed + '&winddeg=' + aWindDeg + '&cloudcov=' + aCloudCov).subscribe((response) => {
         let jsonString = JSON.parse(JSON.stringify(response));
 
         var weather = jsonString.result[0];
@@ -294,7 +360,6 @@ export class HomePage {
         this.ourPred.push(JSON.parse(jsonPred));
       });
       this.owmPreds.pop();
-      console.log(this.owmPreds);
     });
   }
 }

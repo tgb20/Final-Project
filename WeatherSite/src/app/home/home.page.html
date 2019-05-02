@@ -110,7 +110,7 @@
                     <br>
                     <ion-item>
                         <ion-label>Select Start Date:</ion-label>
-                        <ion-datetime display-format="MMM DD, YYYY" min="2014-10-01" max="2019-04-10"></ion-datetime>
+                        <ion-datetime #dateTime display-format="MMM DD, YYYY" (ionChange)="getHistoricalData()" min="2014-10-01" max="2019-04-10"></ion-datetime>
                       </ion-item>
                   </ion-card-header>
                   <ion-card-content>
@@ -118,7 +118,7 @@
                     <br>
                     <ion-grid>
                       <ion-row>
-                        <ion-col *ngFor="let pred of owmPreds">
+                        <ion-col *ngFor="let pred of historyPreds">
                           <ion-card>
                             <ion-card-header>
                               <ion-card-title>{{pred.dt}}</ion-card-title>
@@ -158,7 +158,7 @@
                     <br>
                     <ion-grid>
                       <ion-row>
-                        <ion-col *ngFor="let pred of owmPreds">
+                        <ion-col *ngFor="let pred of historyPreds">
                           <ion-card>
                             <ion-card-header>
                               <ion-card-title>{{pred.dt}}</ion-card-title>
