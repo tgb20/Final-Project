@@ -71,7 +71,7 @@ function(temp, pressure, humidity, windspeed, winddeg, cloudcov){
 #* @get /getHistory
 function(year, month, day){
   
-  calcDate <- paste(year, "-", month, "-", day, " 00:00:00 +0000 UTC", sep="")
+  calcDate <- paste(year, "-", month, "-", day, " 16:00:00 +0000 UTC", sep="")
   day1Row <- which(data.df$dtiso == calcDate)
   day2Row <- day1Row + 24
   day3Row <- day2Row + 24
