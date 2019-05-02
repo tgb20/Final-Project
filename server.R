@@ -68,8 +68,17 @@ function(temp, pressure, humidity, windspeed, winddeg, cloudcov){
 #* @param year year to get from
 #* @param month month to get from
 #* @param day day to get from
+#* @get /getHistory
 function(year, month, day){
-  calcDate <- year + "-" + month + "-" + day + " 00:00:00 +0000 UTC"
-  dateRow <- which(data.df$dtiso == calcDate)
-  list(row = dateRow)
+  
+  calcDate <- paste(year, "-", month, "-", day, " 00:00:00 +0000 UTC", sep="")
+  day1Row <- which(data.df$dtiso == calcDate)
+  day2Row <- day1Row + 24
+  day3Row <- day2Row + 24
+  day4Row <- day3Row + 24
+  day5Row <- day4Row + 24
+  
+  history.df <- data.df[c(day1Row, day2Row, day3Row, day4Row, day5Row),]
+  
+  list(hTypes = history.df$weathertype, hTemps = history.df$temp, hPressure = history.df$pressure, hHumidity = history.df$humidity, hWindspeed = history.df$windspeed, hWindDeg = history.df$winddeg, hCloudcov = history.df$cloudcov)
 }
