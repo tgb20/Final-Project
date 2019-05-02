@@ -4,6 +4,12 @@
 library(ROCR)
 library(class)
 
+#* @filter cors
+cors <- function(res) {
+  res$setHeader("Access-Control-Allow-Origin", "*")
+  plumber::forward()
+}
+
 set.seed(12345)
 data.df <- read.csv("Data/cleaned_data.csv")
 data.size <- nrow(data.df)

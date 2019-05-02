@@ -203,6 +203,10 @@ export class HomePage {
           this.owmPreds.push(JSON.parse(jsonPred));
         }
       });
+      this.http.get('/getKNN?temp=%20281.14&pressure=0&humidity=92&windspeed=2.06&winddeg=59.622&cloudcov=100').subscribe((response) => {
+        let jsonString = JSON.parse(JSON.stringify(response));
+        console.log(jsonString.result[0]);
+      });
       this.owmPreds.pop();
       console.log(this.owmPreds);
     });
