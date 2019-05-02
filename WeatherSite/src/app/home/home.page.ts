@@ -9,11 +9,12 @@ import { Chart } from 'chart.js';
 })
 export class HomePage {
 
-  city:string;
-  country:string;
-  owmPreds:any[] = [];
+  city: string;
+  country: string;
+  owmPreds: any[] = [];
+  ourPred: any[] = [];
 
-  visitedDays:any[] = [];
+  visitedDays: any[] = [];
 
   @ViewChild('radarCanvas') radarCanvas;
   radarChart: any;
@@ -22,46 +23,76 @@ export class HomePage {
   }
 
   ngOnInit() {
-    this.getOpenWeatherMapData();
+    this.getRealTimeData();
 
     this.radarChart = new Chart(this.radarCanvas.nativeElement, {
 
-      type: 'radar',
+      type: 'bar',
       data: {
-          labels: ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019"],
-          datasets: [{
-              label: 'Clear',
-              data: [1096, 3685, 3445, 3274, 3726, 3429, 3098, 728],
-              backgroundColor: [
-                  'rgba(255,206,0, 0.1)'
-              ],
-              borderColor: [
-                'rgba(255,206,0, 0.1)'
-            ]
-          },
-          {
-            label: 'Clouds',
-            data: [477, 2825, 2707, 2409, 2587, 2314, 2555, 1159],
-            backgroundColor: [
-                'rgba(152,154,162, 0.1)'
-            ],
-            bordorColor: [
-              'rgba(152,154,162, 0.1)'
+        labels: ["2013", "2014", "2015", "2016", "2017", "2018"],
+        datasets: [{
+          label: 'Clear',
+          data: [685, 3445, 3274, 3726, 3429, 3098],
+          backgroundColor: [
+            'rgba(255,206,0, 1)',
+            'rgba(255,206,0, 1)',
+            'rgba(255,206,0, 1)',
+            'rgba(255,206,0, 1)',
+            'rgba(255,206,0, 1)',
+            'rgba(255,206,0, 1)'
+          ]
+        },
+        {
+          label: 'Clouds',
+          data: [2825, 2707, 2409, 2587, 2314, 2555],
+          backgroundColor: [
+            'rgba(152,154,162, 1)',
+            'rgba(152,154,162, 1)',
+            'rgba(152,154,162, 1)',
+            'rgba(152,154,162, 1)',
+            'rgba(152,154,162, 1)',
+            'rgba(152,154,162, 1)'
           ]
         },
         {
           label: 'Snow',
-          data: [70, 188, 60, 514, 232, 314, 357, 155],
+          data: [188, 60, 514, 232, 314, 357],
           backgroundColor: [
-              'rgba(112,209,232, 0.1)'
-          ],
-          bordorColor: [
-            'rgba(112,209,232, 0.1)'
-        ]
-      }]
+            'rgba(112,209,232, 1)',
+            'rgba(112,209,232, 1)',
+            'rgba(112,209,232, 1)',
+            'rgba(112,209,232, 1)',
+            'rgba(112,209,232, 1)',
+            'rgba(112,209,232, 1)'
+          ]
+        },
+        {
+          label: 'Rain',
+          data: [2055, 2546, 2553, 2240, 2660, 2708],
+          backgroundColor: [
+            'rgba(56,128,255, 1)',
+            'rgba(56,128,255, 1)',
+            'rgba(56,128,255, 1)',
+            'rgba(56,128,255, 1)',
+            'rgba(56,128,255, 1)',
+            'rgba(56,128,255, 1)'
+          ]
+        },
+        {
+          label: 'Thunderstorm',
+          data: [19, 14, 22, 11, 54, 54],
+          backgroundColor: [
+            'rgba(245,61,61, 1)',
+            'rgba(245,61,61, 1)',
+            'rgba(245,61,61, 1)',
+            'rgba(245,61,61, 1)',
+            'rgba(245,61,61, 1)',
+            'rgba(245,61,61, 1)'
+          ]
+        }]
       }
 
-  });
+    });
 
 
   }
@@ -75,51 +106,61 @@ export class HomePage {
     win.focus();
   }
 
-  openGithub(){
+  openGithub() {
     var win = window.open("https://github.com/tgb20/Final-Project", '_blank');
     win.focus();
   }
 
-  openRawJSON(){
+  openRawJSON() {
     var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Data/raw_data.json", '_blank');
     win.focus();
   }
-  
-  openDataCleaner(){
+
+  openDataCleaner() {
     var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Python Scripts/dataCleaner.py", '_blank');
     win.focus();
   }
 
-  openDataCompressor(){
+  openDataCompressor() {
     var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Python Scripts/dataCompressor.py", '_blank');
     win.focus();
   }
 
-  openDataGenerator(){
+  openDataGenerator() {
     var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Python Scripts/dataGenerator.py", '_blank');
     win.focus();
   }
 
-  openCleanedCSV(){
+  openCleanedCSV() {
     var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Data/cleaned_data.csv", '_blank');
     win.focus();
   }
 
-  openFakeCSV(){
+  openFakeCSV() {
     var win = window.open("https://github.com/tgb20/Final-Project/raw/master/Data/fake_data.csv", '_blank');
     win.focus();
   }
 
-  openCompressedCSV(){
+  openCompressedCSV() {
     var win = window.open("https://github.com/tgb20/Final-Project", '_blank');
     win.focus();
   }
 
-  getOpenWeatherMapData() {
+  getRealTimeData() {
+
+
+    var aTemp;
+    var aPressure;
+    var aHumidity;
+    var aWindSpeed;
+    var aWindDeg;
+    var aCloudCov;
+
 
     this.http.get('https://api.openweathermap.org/data/2.5/forecast?q=Boston&APPID=2efe065bf1aaf366c8aa78532ce3244a').subscribe((response) => {
-      
+
       let jsonString = JSON.parse(JSON.stringify(response));
+      console.log(jsonString)
       this.city = jsonString.city.name;
       this.country = jsonString.city.country;
       jsonString.list.forEach(pred => {
@@ -127,9 +168,10 @@ export class HomePage {
         var day = date.getDate();
         var month = date.getMonth() + 1;
         var rDow = date.getDay();
+        var year = date.getFullYear();
         var dow = "";
 
-        switch(rDow){
+        switch (rDow) {
           case 0:
             dow = "Sunday";
             break;
@@ -156,20 +198,28 @@ export class HomePage {
             break;
         }
 
-        if(!this.visitedDays.includes(day)){
+        if (!this.visitedDays.includes(day)) {
           this.visitedDays.push(day);
 
-          var temp = "" + ((9.0/5.0) * (pred.main.temp - 273) + 32).toFixed(2) + "° F";
+          var temp = "" + ((9.0 / 5.0) * (pred.main.temp - 273) + 32).toFixed(2) + "° F";
           var humd = pred.main.humidity + "%";
           var press = pred.main.pressure.toFixed(2) + " hPa";
           var wind = (pred.wind.speed * 2.23694).toFixed(2) + " mph";
+
+
+          aTemp = pred.main.temp;
+          aPressure = pred.main.pressure;
+          aHumidity = pred.main.humidity;
+          aWindSpeed = pred.wind.speed;
+          aWindDeg = pred.wind.deg;
+          aCloudCov = pred.clouds.all;
 
           var weather = pred.weather[0].main;
 
           var icon = "sunny";
           var color = "primary";
 
-          switch(weather){
+          switch (weather) {
             case "Clear":
               icon = "sunny";
               color = "warning";
@@ -196,20 +246,55 @@ export class HomePage {
               break;
             default:
               icon = "snow";
-              break;              
+              break;
           }
 
-          var jsonPred = '{"dt": "' + month + "/" + day + '", "temp": "' + temp + '", "humd":"' + humd + '", "press":"' + press + '", "wind":"' + wind + '", "weather":"' + weather + '", "dow":"' + dow + '", "icon":"' + icon + '", "color":"' + color + '"}';
+          var jsonPred = '{"dt": "' + month + "/" + day + "/" + year +'", "temp": "' + temp + '", "humd":"' + humd + '", "press":"' + press + '", "wind":"' + wind + '", "weather":"' + weather + '", "dow":"' + dow + '", "icon":"' + icon + '", "color":"' + color + '"}';
           this.owmPreds.push(JSON.parse(jsonPred));
         }
       });
-      this.http.get('/getKNN?temp=%20281.14&pressure=0&humidity=92&windspeed=2.06&winddeg=59.622&cloudcov=100').subscribe((response) => {
+      this.http.get('http://71.232.77.6:8000/getKNN?temp=' + aTemp + '&pressure=' + aPressure + '&humidity=' + aPressure + '&windspeed=' + aWindSpeed + '&winddeg=' + aWindDeg + '&cloudcov=' + aCloudCov).subscribe((response) => {
         let jsonString = JSON.parse(JSON.stringify(response));
-        console.log(jsonString.result[0]);
+
+        var weather = jsonString.result[0];
+
+        var icon = "sunny";
+        var color = "primary";
+
+        switch (weather) {
+          case "Clear":
+            icon = "sunny";
+            color = "warning";
+            break;
+          case "Clouds":
+            icon = "partly-sunny";
+            color = "medium";
+            break;
+          case "Drizzle":
+            icon = "rainy";
+            color = "primary";
+            break;
+          case "Rain":
+            icon = "rainy";
+            color = "primary";
+            break;
+          case "Thunderstorm":
+            icon = "thunderstorm";
+            color = "danger";
+            break;
+          case "Snow":
+            color = "secondary"
+            icon = "snow";
+            break;
+          default:
+            icon = "snow";
+            break;
+        }
+        var jsonPred = '{"dt": "0", "temp": "0", "humd":"0", "press":"0", "wind":"0", "weather":"' + weather + '", "dow":"0", "icon":"' + icon + '", "color":"' + color + '"}';
+        this.ourPred.push(JSON.parse(jsonPred));
       });
       this.owmPreds.pop();
       console.log(this.owmPreds);
     });
-
   }
 }

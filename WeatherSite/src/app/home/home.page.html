@@ -89,27 +89,13 @@
                           <ion-card-title>Our KNN Says</ion-card-title>
                       </ion-card-header>
                       <ion-card-content>
-                          <ion-chip color="warning">
-                              <ion-icon name="Sunny"></ion-icon>
-                              <ion-label>Sunny</ion-label>
+                          <ion-chip color={{ourPred[0].color}}>
+                              <ion-icon name={{ourPred[0].icon}}></ion-icon>
+                              <ion-label>{{ourPred[0].weather}}</ion-label>
                             </ion-chip>
                       </ion-card-content>
                     </ion-card>
                   </ion-col>
-                  <ion-col>
-                      <ion-card>
-                        <ion-card-header>
-                            <ion-card-subtitle>Lucy and Jacob</ion-card-subtitle>
-                            <ion-card-title>Our Tensor Says</ion-card-title>
-                        </ion-card-header>
-                        <ion-card-content>
-                            <ion-chip color="warning">
-                                <ion-icon name="Sunny"></ion-icon>
-                                <ion-label>Sunny</ion-label>
-                              </ion-chip>
-                        </ion-card-content>
-                      </ion-card>
-                    </ion-col>
                 </ion-row>
               </ion-card-content>
             </ion-card>
@@ -119,24 +105,63 @@
           <ion-col text-center>
               <ion-card>
                   <ion-card-header>
-                    <ion-card-subtitle color="primary">OpenWeatherMap</ion-card-subtitle>
-                    <ion-card-title>5 Day Forecast for {{city}}, {{country}}</ion-card-title>
+                    <ion-card-subtitle color="primary">Full Forecast Demo</ion-card-subtitle>
+                    <ion-card-title>Weather for {{city}}, {{country}}</ion-card-title>
                     <br>
                     <ion-item>
                         <ion-label>Select Start Date:</ion-label>
-                        <ion-datetime display-format="MMM DD, YYYY" min="2012-10-01" max="2019-04-10"></ion-datetime>
+                        <ion-datetime display-format="MMM DD, YYYY" min="2014-10-01" max="2019-04-10"></ion-datetime>
                       </ion-item>
                   </ion-card-header>
                   <ion-card-content>
-                    Predictions provided by OpenWeatherMap
+                    Historical Data provided by OpenWeatherMap
                     <br>
                     <ion-grid>
                       <ion-row>
                         <ion-col *ngFor="let pred of owmPreds">
                           <ion-card>
                             <ion-card-header>
-                              <ion-card-subtitle>{{pred.dt}}</ion-card-subtitle>
-                              <ion-card-title>{{pred.dow}}</ion-card-title>
+                              <ion-card-title>{{pred.dt}}</ion-card-title>
+                            </ion-card-header>
+                            <ion-card-content>
+                              <ion-chip color={{pred.color}}>
+                                <ion-icon name={{pred.icon}}></ion-icon>
+                                <ion-label>{{pred.weather}}</ion-label>
+                              </ion-chip>
+                              <br>
+                              <ion-chip>
+                                <ion-icon name="thermometer"></ion-icon>
+                                <ion-label>{{pred.temp}}</ion-label>
+                              </ion-chip>
+                              <br>
+                              <ion-chip>
+                                <ion-icon name="arrow-down"></ion-icon>
+                                <ion-label>{{pred.press}}</ion-label>
+                              </ion-chip>
+                              <br>
+                              <ion-chip>
+                                <ion-icon name="water"></ion-icon>
+                                <ion-label>{{pred.humd}}</ion-label>
+                              </ion-chip>
+                              <br>
+                              <ion-chip>
+                                <ion-icon name="flag"></ion-icon>
+                                <ion-label>{{pred.wind}}</ion-label>
+                              </ion-chip>
+                            </ion-card-content>
+                          </ion-card>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                    <br>
+                    Our Forecast created with Time Series and KNN
+                    <br>
+                    <ion-grid>
+                      <ion-row>
+                        <ion-col *ngFor="let pred of owmPreds">
+                          <ion-card>
+                            <ion-card-header>
+                              <ion-card-title>{{pred.dt}}</ion-card-title>
                             </ion-card-header>
                             <ion-card-content>
                               <ion-chip color={{pred.color}}>
@@ -196,7 +221,7 @@
           <ion-col text-center>
               <ion-card>
                   <ion-card-header>
-                    Hours with Weather Type
+                    Hours in Year with Weather
                   </ion-card-header>
                   <ion-card-content>
                     <canvas #radarCanvas></canvas>

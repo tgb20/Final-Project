@@ -1,11 +1,5 @@
 {
   "name": "WeatherSite",
   "integrations": {},
-  "type": "angular",
-  "proxies": [
-    {
-      "path": "/getKNN",
-      "proxyUrl": "http://71.232.77.6:8000/getKNN"
-    }
-  ]
+  "type": "angular"
 }
