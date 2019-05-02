@@ -19,19 +19,6 @@ normalize.it <- function(vec) {
   y
 }
 
-weather.lst <- lapply(data.df[ , 3:8], normalize.it)
-data.weather.normed <- data.frame(weather.lst)
-summary(data.weather.normed)
-
-train.row.nums <- sample(1:data.size, data.size*train.size, replace = FALSE)
-train.data <- subset(data.weather.normed[train.row.nums, ])
-
-test.row.nums <- setdiff(1:data.size, train.row.nums)
-test.data <- subset(data.weather.normed[test.row.nums, ])
-
-class.labels <- data.df$weathertype[train.row.nums]
-true.labels <- data.df$weathertype[test.row.nums]
-
 #* Echo back the input
 #* @param temp Current Temperature
 #* @param pressure Current Pressure
@@ -49,13 +36,24 @@ function(temp, pressure, humidity, windspeed, winddeg, cloudcov){
   winddegValue <- as.numeric(winddeg)
   cloudcovValue <- as.numeric(cloudcov)
   
-  # Add Values to predict to all values, normalize, then run knn.
+  # Create Row of Current Data
+  valuetopredict.df <- data.frame("temp" = c(tempValue), "pressure" = c(pressureValue), "humidity" = c(humidityValue), "windspeed" = c(windspeedValue), "winddeg" = c(winddegValue), "cloudcov" = c(cloudcovValue))
   
-  predict.df <- data.frame("temp" = c(tempValue), "pressure" = c(pressureValue), "humidity" = c(humidityValue), "windspeed" = c(windspeedValue), "winddeg" = c(winddegValue), "cloudcov" = c(cloudcovValue))
+  # Get Full Dataset
+  train.variables <- data.df[, 3:8]
   
-  predict.lst <- lapply(predict.df, normalize.it)
-  predict.normed <- data.frame(predict.lst)
+  # Append Current Data to Full Dataset
+  fulldata.df <- rbind(train.variables, valuetopredict.df)
   
-  knn.predict <- knn(train.data, predict.normed, class.labels, k=5)
+  full.lst <- lapply(fulldata.df[ , 1:6], normalize.it)
+  data.full.normed <- data.frame(full.lst)
+  
+  train.row.nums <- sample(1:data.size, data.size*train.size, replace = FALSE)
+  class.labels <- data.df$weathertype[train.row.nums]
+  train.data <- subset(data.full.normed[train.row.nums, ])
+  
+  valuetopredict.normed <- tail(data.full.normed, 1)
+  
+  knn.predict <- knn(train.data, valuetopredict.normed, class.labels, k=5)
   list(result = knn.predict)
 }
