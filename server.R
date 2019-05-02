@@ -25,16 +25,7 @@ normalize.it <- function(vec) {
   y
 }
 
-#* Return KNN Results for Data
-#* @param temp Current Temperature
-#* @param pressure Current Pressure
-#* @param humidity Current Humidity
-#* @param windspeed Current Wind Speed
-#* @param winddeg Current Wind Degrees
-#* @param cloudcov Current Cloud Coverage
-#* @get /getKNN
-function(temp, pressure, humidity, windspeed, winddeg, cloudcov){
-  
+knnpred <- function(temp, pressure, humidity, windspeed, winddeg, cloudcov){
   tempValue <- as.numeric(temp)
   pressureValue <- as.numeric(pressure)
   humidityValue <- as.numeric(humidity)
@@ -61,6 +52,19 @@ function(temp, pressure, humidity, windspeed, winddeg, cloudcov){
   valuetopredict.normed <- tail(data.full.normed, 1)
   
   knn.predict <- knn(train.data, valuetopredict.normed, class.labels, k=5)
+  knn.predict
+}
+
+#* Return KNN Results for Data
+#* @param temp Current Temperature
+#* @param pressure Current Pressure
+#* @param humidity Current Humidity
+#* @param windspeed Current Wind Speed
+#* @param winddeg Current Wind Degrees
+#* @param cloudcov Current Cloud Coverage
+#* @get /getKNN
+function(temp, pressure, humidity, windspeed, winddeg, cloudcov){
+  knn.predict <- knnpred(temp, pressure, humidity, windspeed, winddeg, cloudcov)
   list(result = knn.predict)
 }
 
