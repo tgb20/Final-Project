@@ -25,7 +25,7 @@ normalize.it <- function(vec) {
   y
 }
 
-#* Echo back the input
+#* Return KNN Results for Data
 #* @param temp Current Temperature
 #* @param pressure Current Pressure
 #* @param humidity Current Humidity
@@ -62,4 +62,14 @@ function(temp, pressure, humidity, windspeed, winddeg, cloudcov){
   
   knn.predict <- knn(train.data, valuetopredict.normed, class.labels, k=5)
   list(result = knn.predict)
+}
+
+#* Get historical data and forecast
+#* @param year year to get from
+#* @param month month to get from
+#* @param day day to get from
+function(year, month, day){
+  calcDate <- year + "-" + month + "-" + day + " 00:00:00 +0000 UTC"
+  dateRow <- which(data.df$dtiso == calcDate)
+  list(row = dateRow)
 }
