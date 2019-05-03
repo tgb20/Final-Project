@@ -181,5 +181,5 @@ function(year, month, day){
   
   history.df <- data.df[c(day1Row, day2Row, day3Row, day4Row, day5Row),]
   
-  list(hTypes = history.df$weathertype, hTemps = history.df$temp, hPressure = history.df$pressure, hHumidity = history.df$humidity, hWindspeed = history.df$windspeed, hWindDeg = history.df$winddeg, hCloudcov = history.df$cloudcov, pTemp = prediction.df$tempVals, pHumd = prediction.df$humidityVals, pPress = prediction.df$pressureVals, pWindspeed = prediction.df$windspeedVals, pWinddeg = prediction.df$winddegVals, pCloudcov = prediction.df$cloudcovVals)
+  list(hTypes = history.df$weathertype, hTemps = history.df$temp, hPressure = history.df$pressure, hHumidity = history.df$humidity, hWindspeed = history.df$windspeed, hWindDeg = history.df$winddeg, hCloudcov = history.df$cloudcov, pTypes = prediction.df$weathertype, pTemp = prediction.df$tempVals, pHumd = prediction.df$humidityVals, pPress = prediction.df$pressureVals, pWindspeed = prediction.df$windspeedVals, pWinddeg = prediction.df$winddegVals, pCloudcov = prediction.df$cloudcovVals)
 }
