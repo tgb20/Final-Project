@@ -14,6 +14,7 @@ export class HomePage {
   owmPreds: any[] = [];
   ourPred: any[] = [];
   historyPreds: any[] = [];
+  forecastPreds: any[] = [];
 
   visitedDays: any[] = [];
 
@@ -27,7 +28,6 @@ export class HomePage {
 
   ngOnInit() {
     this.getRealTimeData();
-    this.getHistoricalData();
 
     this.radarChart = new Chart(this.radarCanvas.nativeElement, {
 
@@ -98,7 +98,7 @@ export class HomePage {
 
     });
 
-
+    this.getHistoricalData();
   }
 
   slideOpts = {
@@ -154,6 +154,7 @@ export class HomePage {
     console.log(this.dateTime.value);
 
     this.historyPreds = [];
+    this.forecastPreds = [];
 
     var sDateTime = this.dateTime.value.toString().split("-");
     var year = sDateTime[0];
@@ -163,7 +164,7 @@ export class HomePage {
 
     this.http.get('http://71.232.77.6:8000/getHistory?year=' + year + '&month=' + month + '&day=' + day).subscribe((response) => {
       let jsonString = JSON.parse(JSON.stringify(response));
-      var i;
+      var i = 0;
       for (i = 0; i < jsonString.hTypes.length; i++) {
 
         var icon = "sunny";
@@ -208,6 +209,52 @@ export class HomePage {
 
         var jsonPred = '{"dt": "' + month + "/" + day + "/" + year + '", "temp": "' + temp + '", "humd":"' + humd + '", "press":"' + press + '", "wind":"' + wind + '", "weather":"' + weather + '", "icon":"' + icon + '", "color":"' + color + '"}';
         this.historyPreds.push(JSON.parse(jsonPred));
+      }
+      var i = 0;
+      for (i = 0; i < jsonString.pTypes.length; i++) {
+
+        var icon = "sunny";
+        var color = "primary";
+
+        var weather = jsonString.pTypes[i];
+
+        switch (weather) {
+          case "Clear":
+            icon = "sunny";
+            color = "warning";
+            break;
+          case "Clouds":
+            icon = "partly-sunny";
+            color = "medium";
+            break;
+          case "Drizzle":
+            icon = "rainy";
+            color = "primary";
+            break;
+          case "Rain":
+            icon = "rainy";
+            color = "primary";
+            break;
+          case "Thunderstorm":
+            icon = "thunderstorm";
+            color = "danger";
+            break;
+          case "Snow":
+            color = "secondary"
+            icon = "snow";
+            break;
+          default:
+            icon = "snow";
+            break;
+        }
+
+        var temp = "" + ((9.0 / 5.0) * (jsonString.pTemp[i] - 273) + 32).toFixed(2) + "° F";
+        var humd = jsonString.pHumd[i] + "%";
+        var press = jsonString.pPress[i].toFixed(2) + " hPa";
+        var wind = (jsonString.pWindspeed[0] * 2.23694).toFixed(2) + " mph";
+
+        var jsonPred = '{"dt": "' + month + "/" + day + "/" + year + '", "temp": "' + temp + '", "humd":"' + humd + '", "press":"' + press + '", "wind":"' + wind + '", "weather":"' + weather + '", "icon":"' + icon + '", "color":"' + color + '"}';
+        this.forecastPreds.push(JSON.parse(jsonPred));
       }
     });
 
