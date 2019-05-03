@@ -60,7 +60,7 @@ conf.matrix <- table(knn.predict, true.labels)
 conf.matrix
 ```
 
-Our K-means model for weather type is much less accurate, as can be seen with the table. We used all of the quantitative parameters to predict weather type, as in our KNN model.
+For our K-means model, we used all of the quantitative parameters to predict weather type, as in our KNN model. This K- model for weather type is less accurate, as can be seen with the table. 
 ## K-means
 ```{r}
 library(fpc)
@@ -80,7 +80,7 @@ clusters(clusterresults, data.df [,3:8])
 ```
 
 
-We used time series to predict the quantitative variables, which are temperature, windspeed, air pressure, and humidity.  The data has some obvious outliers, so we removed them from our initial plot   For all of our time series models, we first created vectors and performed time series analysis on those vectors.  We plotted each one with the outliers avergeraged out. Then, we used the HoltWinters method and the forecast method to predict the future weather.  To verify our time series model, we compared the actual values to our predicted values.  
+We used time series to predict the quantitative variables, which are temperature, windspeed, air pressure, and humidity.  The data has some obvious outliers, so we removed them from our initial plot for viewing the data.  For all of our time series models, we first created vectors and performed time series analysis on those vectors, using 8760 as our frequency because this is the number of hours in a year. Then, we used the HoltWinters method and the forecast method to predict the future weather.  To verify our time series model, we compared the actual values to our predicted values.  
 #Time Series 
 ```{r}
 #PREDICT TEMPERATURE
