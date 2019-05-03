@@ -148,6 +148,10 @@ function(temp, pressure, humidity, windspeed, winddeg, cloudcov){
 #* @get /getHistory
 function(year, month, day){
   
+  year <- "2018"
+  month <- "06"
+  day <- "13"
+  
   calcDate <- paste(year, "-", month, "-", day, " 16:00:00 +0000 UTC", sep="")
   day1Row <- which(data.df$dtiso == calcDate)
   day2Row <- day1Row + 24
@@ -173,9 +177,10 @@ function(year, month, day){
   
   prediction.df <- allPredictions.df[c(1, 25, 49, 73, 97),]
   
-  prediction.df$weathertype <- knnpred(prediction.df$tempVals, prediction.df$pressureVals, prediction.df$humidityVals, prediction.df$windspeedVals, prediction.df$winddegVals, prediction.df$cloudcovVals)
+  knnpred(prediction.df$tempVals, prediction.df$pressureVals, prediction.df$humidityVals, prediction.df$windspeedVals, prediction.df$winddegVals, prediction.df$cloudcovVals)
   
   history.df <- data.df[c(day1Row, day2Row, day3Row, day4Row, day5Row),]
   
-  list(hTypes = history.df$weathertype, hTemps = history.df$temp, hPressure = history.df$pressure, hHumidity = history.df$humidity, hWindspeed = history.df$windspeed, hWindDeg = history.df$winddeg, hCloudcov = history.df$cloudcov, pTypes = prediction.df$weathertype, pTemp = prediction.df$tempVals, pHumd = prediction.df$humidityVals, pPress = prediction.df$pressureVals, pWindspeed = prediction.df$windspeedVals, pWinddeg = prediction.df$winddegVals, pCloudcov = prediction.df$cloudcovVals)
+  list(dates = history.df$dtiso, hTypes = history.df$weathertype, hTemps = history.df$temp, hPressures = history.df$pressure, hHumiditys = history.df$humidity, hWindspeeds = history.df$windspeed, hWindDegs = history.df$winddeg, hCloudcovs = history.df$cloudcov, 
+       pTypes = prediction.df$weathertype, pTemps = prediction.df$tempVals, hPressures = prediction.df$pressureVals, hHumiditys = prediction.df$humidityVals, pWindspeeds = prediction.df$windspeedVals, pWindDegs = prediction.df$winddegVals, pCloudcovs = prediction.df$cloudcovVals)
 }
