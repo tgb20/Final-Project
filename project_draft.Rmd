@@ -5,19 +5,13 @@ date: "4/5/2019"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Our project aimed to create a five day weather forecast for the city of Boston, MA.
 
 
-
-## RUN THIS BEFORE ANYTHING (initialization of data)
+This first block of code reads the data file and creates a training and testing set for our KNN model.  Our training data comprises of 80% of our data. Although the raw data has more than five weather type classifications, we decided to generalize the weather type, as this would make our model easier to interpret, as well as more accurate. 
+## initialization of KNN data
 ```{r}
 library(ROCR)
 library(class)
@@ -53,6 +47,7 @@ true.labels <- data.df$weathertype[test.row.nums]
 ```
 
 
+Our KNN model uses all of the parameters from our training data and predicts the weather type.  We also found the misclassification rate, and displayed a confusion matrix, showing the predicted scores and the actual scores. 
 #KNN MODEL AND MISC RATE
 ```{r}
 knn.predict <- knn(train.data, test.data, class.labels, k=5)
@@ -65,7 +60,7 @@ conf.matrix <- table(knn.predict, true.labels)
 conf.matrix
 ```
 
-
+For our K-means model, we used all of the quantitative parameters to predict weather type, as in our KNN model. This K- model for weather type is less accurate, as can be seen with the table. 
 ## K-means
 ```{r}
 library(fpc)
@@ -85,6 +80,7 @@ clusters(clusterresults, data.df [,3:8])
 ```
 
 
+We used time series to predict the quantitative variables, which are temperature, windspeed, air pressure, and humidity.  The data has some obvious outliers, so we removed them from our initial plot for viewing the data.  For all of our time series models, we first created vectors and performed time series analysis on those vectors, using 8760 as our frequency because this is the number of hours in a year. Then, we used the HoltWinters method and the forecast method to predict the future weather.  To verify our time series model, we compared the actual values to our predicted values.  
 #Time Series 
 ```{r}
 #PREDICT TEMPERATURE
@@ -218,10 +214,3 @@ humid.forecast2
 ```
 
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
