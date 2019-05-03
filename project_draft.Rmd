@@ -47,7 +47,8 @@ true.labels <- data.df$weathertype[test.row.nums]
 ```
 
 
-Our KNN model uses all of the parameters from our training data and predicts the weather type.  We also found the misclassification rate, and displayed a confusion matrix, showing the predicted scores and the actual scores. 
+
+Our KNN model uses all of the parameters from our training data and predicts the weather type.  We also found the misclassification rate, and displayed a confusion matrix, showing the predicted category and the actual category. 
 #KNN MODEL AND MISC RATE
 ```{r}
 knn.predict <- knn(train.data, test.data, class.labels, k=5)
@@ -60,7 +61,8 @@ conf.matrix <- table(knn.predict, true.labels)
 conf.matrix
 ```
 
-For our K-means model, we used all of the quantitative parameters to predict weather type, as in our KNN model. This K- model for weather type is less accurate, as can be seen with the table. 
+
+For our K-means model, we used all of the quantitative parameters to predict weather type, as in our KNN model. This K-means model for weather type is less accurate, as can be seen with the table.  We also performed a chi-squared test on this model, and the p-value appears to be quite low.
 ## K-means
 ```{r}
 library(fpc)
@@ -80,7 +82,7 @@ clusters(clusterresults, data.df [,3:8])
 ```
 
 
-We used time series to predict the quantitative variables, which are temperature, windspeed, air pressure, and humidity.  The data has some obvious outliers, so we removed them from our initial plot for viewing the data.  For all of our time series models, we first created vectors and performed time series analysis on those vectors, using 8760 as our frequency because this is the number of hours in a year. Then, we used the HoltWinters method and the forecast method to predict the future weather.  To verify our time series model, we compared the actual values to our predicted values.  
+We used time series analysis to predict the quantitative variables, which are temperature, windspeed, air pressure, and humidity.  The data has some obvious outliers, so we removed them from our initial plot for viewing the data.  For all of our time series models, we first created vectors and performed time series analysis on those vectors, using 8760 as our frequency because this is the number of hours in a year. Then, we used the HoltWinters method and the forecast method to predict the future weather.  To verify our time series model, we compared the actual values to our predicted values.  
 #Time Series 
 ```{r}
 #PREDICT TEMPERATURE
@@ -113,12 +115,6 @@ weather.forecast2 <- forecast(weather.pred2, h=120)
 plot(weather.forecast2)
 weather.forecast2
 
-#data.df[which(data.df$dtiso == "2012-10-03 17:00:00 +0000 UTC"),]$weathertype
-#weather.pred2 <- forecast:::forecast.HoltWinters(weather.pred, h=120)
-#forecast:::plot.forecast(weather.pred2)
-#hist(residuals(weather.pred2))
-
-data.df$temp[dateRow:dateRow+120]
 ```
  
 
