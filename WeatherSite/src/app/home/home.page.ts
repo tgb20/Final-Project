@@ -18,12 +18,16 @@ export class HomePage {
 
   visitedDays: any[] = [];
 
+  spinner1: boolean;
+  spinner2: boolean;
+
   @ViewChild('radarCanvas') radarCanvas;
   @ViewChild('dateTime') dateTime;
-
   radarChart: any;
 
   constructor(private http: HttpClient) {
+    this.spinner1 = false;
+    this.spinner2 = false;
   }
 
   ngOnInit() {
@@ -97,8 +101,6 @@ export class HomePage {
       }
 
     });
-
-    this.getHistoricalData();
   }
 
   slideOpts = {
@@ -152,6 +154,8 @@ export class HomePage {
 
   getHistoricalData() {
     console.log(this.dateTime.value);
+    this.spinner1 = true;
+    this.spinner2 = true;
 
     this.historyPreds = [];
     this.forecastPreds = [];
@@ -161,7 +165,6 @@ export class HomePage {
     var month = sDateTime[1];
     var sDay = sDateTime[2].split("T");
     var day = sDay[0];
-
     this.http.get('http://71.232.77.6:8000/getHistory?year=' + year + '&month=' + month + '&day=' + day).subscribe((response) => {
       let jsonString = JSON.parse(JSON.stringify(response));
       var i = 0;
@@ -256,8 +259,9 @@ export class HomePage {
         var jsonPred = '{"dt": "' + month + "/" + day + "/" + year + '", "temp": "' + temp + '", "humd":"' + humd + '", "press":"' + press + '", "wind":"' + wind + '", "weather":"' + weather + '", "icon":"' + icon + '", "color":"' + color + '"}';
         this.forecastPreds.push(JSON.parse(jsonPred));
       }
+      this.spinner1 = false;
+      this.spinner2 = false;
     });
-
   }
 
   getRealTimeData() {

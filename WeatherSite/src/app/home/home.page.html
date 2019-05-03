@@ -116,6 +116,7 @@
                   <ion-card-content>
                     Historical Data provided by OpenWeatherMap
                     <br>
+                    <ion-spinner *ngIf="spinner1" name="crescent"></ion-spinner>
                     <ion-grid>
                       <ion-row>
                         <ion-col *ngFor="let pred of historyPreds">
@@ -156,6 +157,7 @@
                     <br>
                     Our Forecast created with Time Series and KNN
                     <br>
+                    <ion-spinner *ngIf="spinner2" name="crescent"></ion-spinner>
                     <ion-grid>
                       <ion-row>
                         <ion-col *ngFor="let pred of forecastPreds">
