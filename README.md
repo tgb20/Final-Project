@@ -84,7 +84,7 @@ Returns:
 - Any packages outlined in server.R
 
 ### Note:
-R runs in your terminal instance so when using SSH I recommend using screen to run R in its own container.
+R runs in your terminal instance so when using SSH I recommend using `screen` to run R in its own container.
 
 Clone the repo to your machine
 ```
