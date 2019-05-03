@@ -1,7 +1,7 @@
 ---
 title: "Project draft"
-author: "lucy and Jacob"
-date: "4/5/2019"
+author: "Lucy Cousins and Jacob Bashista"
+date: "5/3/2019"
 output: html_document
 ---
 
@@ -10,7 +10,7 @@ output: html_document
 Our project aimed to create a five day weather forecast for the city of Boston, MA.
 
 
-This first block of code reads the data file and creates a training and testing set for our KNN model.  Our training data comprises of 80% of our data. Although the raw data has more than five weather type classifications, we decided to generalize the weather type, as this would make our model easier to interpret, as well as more accurate. 
+This first block of code reads the data file and creates a training and testing set for our KNN model.  Our training data comprises of 80% of our data. Although the raw data has more than five weather type classifications, we decided to generalize the weather type, as this would make our model easier to interpret, and probably more accurate. 
 ## initialization of KNN data
 ```{r}
 library(ROCR)
@@ -21,7 +21,6 @@ set.seed(12345)
 data.size <- nrow(data.df)
 train.size <- .80
 num.test.labels <- data.size*(1-train.size)
-
 
 data.df$weather <- as.factor(data.df$weathertype)
 levels(data.df$weathertype) <- c("Clear", "Clouds", "Rain", "Snow", "Thunderstorm")
@@ -47,7 +46,7 @@ true.labels <- data.df$weathertype[test.row.nums]
 ```
 
 
-Our KNN model uses all of the parameters from our training data and predicts the weather type.  We also found the misclassification rate, and displayed a confusion matrix, showing the predicted scores and the actual scores. 
+Our KNN model uses all of the parameters from our training data and predicts the weather type. We used 5 groups, as we know this is the number of categories for our weather type.  We also found the misclassification rate, and displayed a confusion matrix, showing the predicted category and the actual category. 
 #KNN MODEL AND MISC RATE
 ```{r}
 knn.predict <- knn(train.data, test.data, class.labels, k=5)
@@ -60,7 +59,8 @@ conf.matrix <- table(knn.predict, true.labels)
 conf.matrix
 ```
 
-For our K-means model, we used all of the quantitative parameters to predict weather type, as in our KNN model. This K- model for weather type is less accurate, as can be seen with the table. 
+
+For our K-means model, we used all of the quantitative columns to predict weather type, as in our KNN model. Since we already know the number of categories, 5, we entered this into our function as well. This K-means model for weather type is less accurate, as can be seen with the table.  We also performed a chi-squared test on this model, and the p-value appears to be quite low.
 ## K-means
 ```{r}
 library(fpc)
@@ -80,7 +80,7 @@ clusters(clusterresults, data.df [,3:8])
 ```
 
 
-We used time series to predict the quantitative variables, which are temperature, windspeed, air pressure, and humidity.  The data has some obvious outliers, so we removed them from our initial plot for viewing the data.  For all of our time series models, we first created vectors and performed time series analysis on those vectors, using 8760 as our frequency because this is the number of hours in a year. Then, we used the HoltWinters method and the forecast method to predict the future weather.  To verify our time series model, we compared the actual values to our predicted values.  
+We used time series analysis to predict the quantitative variables, which are temperature, windspeed, air pressure, and humidity.  The data has some obvious outliers, so we removed them from our initial plot for viewing the data.  For all of our time series models, we first created vectors and performed time series analysis on those vectors, using 8760 as our frequency because this is the number of hours in a year. Then, we used the HoltWinters method and the forecast method to predict the future weather.  To verify our time series model, we compared the actual values to our predicted values.  
 #Time Series 
 ```{r}
 #PREDICT TEMPERATURE
@@ -113,12 +113,6 @@ weather.forecast2 <- forecast(weather.pred2, h=120)
 plot(weather.forecast2)
 weather.forecast2
 
-#data.df[which(data.df$dtiso == "2012-10-03 17:00:00 +0000 UTC"),]$weathertype
-#weather.pred2 <- forecast:::forecast.HoltWinters(weather.pred, h=120)
-#forecast:::plot.forecast(weather.pred2)
-#hist(residuals(weather.pred2))
-
-data.df$temp[dateRow:dateRow+120]
 ```
  
 
