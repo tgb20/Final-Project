@@ -1,0 +1,210 @@
+---
+title: "Project draft"
+author: "Lucy Cousins and Jacob Bashista"
+date: "5/3/2019"
+output: html_document
+---
+
+## R Markdown
+
+Our project aimed to create a five day weather forecast for the city of Boston, MA.
+
+
+This first block of code reads the data file and creates a training and testing set for our KNN model.  Our training data comprises of 80% of our data. Although the raw data has more than five weather type classifications, we decided to generalize the weather type, as this would make our model easier to interpret, and probably more accurate. 
+## initialization of KNN data
+```{r}
+library(ROCR)
+library(class)
+
+data.df <- read.csv("cleaned_data.csv")
+set.seed(12345)
+data.size <- nrow(data.df)
+train.size <- .80
+num.test.labels <- data.size*(1-train.size)
+
+data.df$weather <- as.factor(data.df$weathertype)
+levels(data.df$weathertype) <- c("Clear", "Clouds", "Rain", "Snow", "Thunderstorm")
+
+normalize.it <- function(vec) {
+    y <- (vec - min(vec))/(max(vec) - min(vec))
+    y
+}
+    
+weather.lst <- lapply(data.df[ , 3:8], normalize.it)
+data.weather.normed <- data.frame(weather.lst)
+summary(data.weather.normed)
+
+train.row.nums <- sample(1:data.size, data.size*train.size, replace = FALSE)
+train.data <- subset(data.weather.normed[train.row.nums, ])
+
+test.row.nums <- setdiff(1:data.size, train.row.nums)
+test.data <- subset(data.weather.normed[test.row.nums, ])
+
+class.labels <- data.df$weathertype[train.row.nums]
+true.labels <- data.df$weathertype[test.row.nums]
+
+```
+
+
+Our KNN model uses all of the parameters from our training data and predicts the weather type. We used 5 groups, as we know this is the number of categories for our weather type.  We also found the misclassification rate, and displayed a confusion matrix, showing the predicted category and the actual category. 
+#KNN MODEL AND MISC RATE
+```{r}
+knn.predict <- knn(train.data, test.data, class.labels, k=5)
+
+num.incorrect.labels <- sum(knn.predict != true.labels)
+misc.rate <- num.incorrect.labels/num.test.labels
+misc.rate
+
+conf.matrix <- table(knn.predict, true.labels)
+conf.matrix
+```
+
+
+For our K-means model, we used all of the quantitative columns to predict weather type, as in our KNN model. Since we already know the number of categories, 5, we entered this into our function as well. This K-means model for weather type is less accurate, as can be seen with the table.  We also performed a chi-squared test on this model, and the p-value appears to be quite low.
+## K-means
+```{r}
+library(fpc)
+library(flexclust)
+set.seed(12345)
+fit.weathertest <- kmeans(data.df[,3:8], 5, nstart=25)
+cont.table <- table(data.df$weathertype, fit.weathertest$cluster)
+cont.table
+chisq.test(cont.table)
+newdf <- data.frame("temp" = c(284.415), "pressure"= c(1017.05), "humididty"= c(83), "windspeed" = c(2.71), "winddeg" = c(157.159), "cloudcov" = c(100))
+
+clusterresults <- kcca(data.df[ ,3:8], k = 5)
+barplot(clusterresults)
+predclus <- predict(clusterresults, newdf)
+
+clusters(clusterresults, data.df [,3:8])
+```
+
+
+We used time series analysis to predict the quantitative variables, which are temperature, windspeed, air pressure, and humidity.  The data has some obvious outliers, so we removed them from our initial plot for viewing the data.  For all of our time series models, we first created vectors and performed time series analysis on those vectors, using 8760 as our frequency because this is the number of hours in a year. Then, we used the HoltWinters method and the forecast method to predict the future weather.  To verify our time series model, we compared the actual values to our predicted values.  
+#Time Series 
+```{r}
+#PREDICT TEMPERATURE
+
+library(ggplot2)
+library(forecast)
+
+weather.vec <- as.vector(data.df$temp)
+#remove outlier by averaging point before and after
+weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
+start <- c(2012,10,1,14)
+end <- c(2019,4,16,0)
+weather.ts <- ts(weather.vec, frequency = 8760, start = start, end = end)
+plot.ts(weather.ts, main = "Temperature Time Series Graph", ylab = "Temperature in Kelvin")
+weather.pred <- HoltWinters(weather.ts)
+weather.forecast <- forecast(weather.pred, h=120)
+plot(weather.forecast)
+subset.ts <- window(weather.ts, start = 2013.5, end = 2013.6)
+plot.ts(subset.ts)
+
+calcDate <- "2014-10-01 00:00:00 +0000 UTC"
+dateRow <- which(data.df$dtiso == calcDate)
+dataSubsetToDate <- data.df[1:dateRow,]
+subWeather.vec <- as.vector(dataSubsetToDate$temp)
+end <- c(2014,10,1,0)
+newWeather.ts <- ts(subWeather.vec, frequency = 8760, start = start, end = end)
+plot.ts(newWeather.ts)
+weather.pred2 <- HoltWinters(newWeather.ts)
+weather.forecast2 <- forecast(weather.pred2, h=120)
+plot(weather.forecast2)
+weather.forecast2
+
+```
+ 
+
+```{r} 
+#PREDICT WINDSPEED
+
+wind.vec <- as.vector(data.df$windspeed)
+#remove outlier by averaging point before and after
+#weather.vec[3864:3865] <- ((weather.vec[3863]+weather.vec[3866])/2)
+start <- c(2012,10,1,14)
+end <- c(2019,4,16,0)
+wind.ts <- ts(wind.vec, frequency = 8760, start = start, end = end)
+plot.ts(wind.ts, main = "Wind Speed Time Series Graph", ylab = "Wind Speed")
+
+wind.pred <- HoltWinters(wind.ts)
+wind.forecast <- forecast(wind.pred, h=120)
+plot(wind.forecast)
+subset.wind.ts <- window(wind.ts, start = 2013.5, end = 2013.6)
+plot.ts(subset.wind.ts)
+
+calcDate <- "2014-10-01 00:00:00 +0000 UTC"
+dateRow <- which(data.df$dtiso == calcDate)
+dataSubsetToDate <- data.df[1:dateRow,]
+subWind.vec <- as.vector(dataSubsetToDate$windspeed)
+end <- c(2014,10,1,0)
+
+newWind.ts <- ts(subWind.vec, frequency = 8760, start = start, end = end)
+plot.ts(newWind.ts)
+wind.pred2 <- HoltWinters(newWind.ts)
+wind.forecast2 <- forecast(wind.pred2, h=120)
+plot(wind.forecast2)
+wind.forecast2
+
+
+```
+
+```{r}
+#PREDICT AIR PRESSURE
+pressure.vec <- as.vector(data.df$pressure)
+pressure.vec[1097:1098] <- (pressure.vec[1096]+pressure.vec[1099])/2
+pressure.vec[2417:2418] <- (pressure.vec[2416]+pressure.vec[2419])/2
+pressure.vec[2587:2588] <- (pressure.vec[2586]+pressure.vec[2589])/2
+start <- c(2012,10,1,14)
+end <- c(2019,4,16,0)
+
+pressure.ts <- ts(pressure.vec, frequency = 8760, start = start, end = end)
+
+pressure.pred <- HoltWinters(pressure.ts)
+pressure.forecast <- forecast(pressure.pred, h=120)
+plot(pressure.forecast)
+subset.pressure.ts <- window(pressure.ts, start = 2013.5, end = 2013.6)
+plot.ts(subset.pressure.ts)
+
+calcDate <- "2014-10-01 00:00:00 +0000 UTC"
+dateRow <- which(data.df$dtiso == calcDate)
+dataSubsetToDate <- data.df[1:dateRow,]
+subPress.vec <- as.vector(dataSubsetToDate$pressure)
+end <- c(2014,10,1,0)
+newPress.ts <- ts(subPress.vec, frequency = 8760, start = start, end = end)
+plot.ts(newPress.ts)
+pressure.pred2 <- HoltWinters(newPress.ts)
+pressure.forecast2 <- forecast(pressure.pred2, h=120)
+plot(pressure.forecast2)
+pressure.forecast2
+```
+
+```{r}
+#PREDICT HUMIDITY
+
+start <- c(2012,10,1,14)
+end <- c(2019,4,16,0)
+humid.vec <- as.vector(data.df$humid)
+humid.ts <- ts(humid.vec, frequency = 8760, start = start, end = end)
+
+plot.ts(humid.ts, main = "Humidity Time Series Graph", ylab = "Humidity")
+humid.pred <- HoltWinters(humid.ts)
+humid.forecast <- forecast(humid.pred, h=120)
+plot(humid.forecast)
+subset.humid.ts <- window(humid.ts, start = 2013.5, end = 2013.6)
+plot.ts(subset.humid.ts)
+
+calcDate <- "2014-10-01 00:00:00 +0000 UTC"
+dateRow <- which(data.df$dtiso == calcDate)
+dataSubsetToDate <- data.df[1:dateRow,]
+subHumid.vec <- as.vector(dataSubsetToDate$humid)
+end <- c(2014,10,1,0)
+newHumid.ts <- ts(subHumid.vec, frequency = 8760, start = start, end = end)
+plot.ts(newHumid.ts)
+humid.pred2 <- HoltWinters(newHumid.ts)
+humid.forecast2 <- forecast(humid.pred2, h=120)
+plot(humid.forecast2)
+humid.forecast2
+```
+
+
