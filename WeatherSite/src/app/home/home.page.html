@@ -207,15 +207,70 @@
       </ion-grid>
     </ion-slide>
     <ion-slide>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Introduction</ion-card-title>
-          <ion-card-subtitle>Data was sourced from OpenWeatherMap</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          This page will serve to provide validation for our models and further insight into the data collected.
-        </ion-card-content>
-      </ion-card>
+      <ion-grid>
+      <ion-row>
+        <ion-col text-center>
+          <ion-card>
+            <ion-card-header>
+                <ion-card-subtitle>Lucy Cousins and Jacob Bashista</ion-card-subtitle>
+                <ion-card-title>Project Description and Learning Objectives:</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+                Our project aimed to create a 5 day weather forecast for Boston, MA.  We wanted to find and display the best models for predicting the categories of weather: temperature, humidity, air pressure, wind speed, wind direction, cloud coverage, and most importantly weather type.  Our learning goals were to create relatively accurate predictions for quantitative and categorical data, and to display them in an interactive, cohesive website.
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col text-center>
+            <ion-card>
+              <ion-card-header>
+                  <ion-card-subtitle>Lucy Cousins and Jacob Bashista</ion-card-subtitle>
+                  <ion-card-title>Resources:</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                  Our data was gathered from a site called openweathermap.org, which provides a six year history for any city upon a small fee.  We used different libraries, including ROCR, class, ggplot2, fpc, and forecast.  We also used Javascript, Typescript, Python, HTML and CSS to create a website that could display the live and interactive weather predictions.  We used time series models to predict the quantitative variables and we used KNN and K-means for predicting weather type.
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col text-center>
+              <ion-card>
+                <ion-card-header>
+                    <ion-card-subtitle>Lucy Cousins and Jacob Bashista</ion-card-subtitle>
+                    <ion-card-title>Summary:</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    Our KNN model for predicting weather type (cloudy, clear, rain, etc.) was fairly successful, with a misclassification rate of only 24%.  Our K-means model was much less accurate, with a misclassification rate exceeding 50%. 
+                    <br>
+                    We verified our time series models by comparing our predicted values to the actual values.  On one trial of our model verification, our temperature was off by 15°F, our wind speed was off by 1 meter per second, air pressure by 13 hPa, humidity by 24%, wind direction by 53°, and our cloud coverage by 124%.  This unrealistic error for cloud coverage is because our model could not recognize that the cloud coverage data was a percentage. The wind direction is measured in degrees and therefore error is hard to measure at is a circular value. 
+                    <br>
+                    Overall, we are pleased with the accuracy of our models, especially our KNN model.  In an ideal world, our time series models for the quantitative variables would be more accurate, however, they do a reasonable job.
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+              <ion-col text-center>
+                <ion-card>
+                  <ion-card-header>
+                      <ion-card-subtitle>Lucy Cousins and Jacob Bashista</ion-card-subtitle>
+                      <ion-card-title>Challenges:</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                      As can be seen with our cloud coverage prediction, our time series models could not recognize that some of our data had limits.  More specifically it could not recognize that cloud coverage and wind direction could not exceed certain values.  For example, cloud coverage cannot exceed 100%, but our model occasionally predicted values like 147%.
+                      <br>
+                      Furthermore, most weather data is seasonal, however, the different categories oscillate with different periods.  For example, temperature changes most dramatically at the scale of months, with winter being cold and summer being warmer.  However, wind speed changes most dramatically at the scale of hours, with nighttime being calmer and daytime being windier.
+                      <br>
+                      Weather is notoriously difficult to predict, especially without advanced data like that gathered from RADARs and data about nearby cities.  It is even more difficult to predict in New England where the weather can change at any moment!  Thus, it was difficult to get reasonably low error rates for our models.
+                      <br>
+                      Lastly, perhaps the most underrated challenge was getting everything to work together, in that we needed each and every one of our models to work correctly, our predictions to work with relatively low error, and our plots to display exactly what we want.  Strange things seemed to pop up with little explanation, like inverted values and never-changing weather types.  It was the little and lurking things that presented the most prominent challenge for our project as a whole.
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+    </ion-grid>
     </ion-slide>
     <ion-slide>
       <ion-grid>
