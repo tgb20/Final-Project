@@ -173,6 +173,12 @@ export class HomePage {
         var icon = "sunny";
         var color = "primary";
 
+        var sDateTime = jsonString.dates[i].toString().split(" ");
+        var dateVal = sDateTime[0].split("-")
+        year = dateVal[0];
+        month = dateVal[1];
+        day = dateVal[2];
+
         var weather = jsonString.hTypes[i];
 
         switch (weather) {
@@ -206,9 +212,9 @@ export class HomePage {
         }
 
         var temp = "" + ((9.0 / 5.0) * (jsonString.hTemps[i] - 273) + 32).toFixed(2) + "° F";
-        var humd = jsonString.hHumidity[i] + "%";
-        var press = jsonString.hPressure[i].toFixed(2) + " hPa";
-        var wind = (jsonString.hWindspeed[0] * 2.23694).toFixed(2) + " mph";
+        var humd = jsonString.hHumiditys[i] + "%";
+        var press = jsonString.hPressures[i].toFixed(2) + " hPa";
+        var wind = (jsonString.hWindspeeds[i] * 2.23694).toFixed(2) + " mph";
 
         var jsonPred = '{"dt": "' + month + "/" + day + "/" + year + '", "temp": "' + temp + '", "humd":"' + humd + '", "press":"' + press + '", "wind":"' + wind + '", "weather":"' + weather + '", "icon":"' + icon + '", "color":"' + color + '"}';
         this.historyPreds.push(JSON.parse(jsonPred));
@@ -218,6 +224,12 @@ export class HomePage {
 
         var icon = "sunny";
         var color = "primary";
+
+        var sDateTime = jsonString.dates[i].toString().split(" ");
+        var dateVal = sDateTime[0].split("-")
+        year = dateVal[0];
+        month = dateVal[1];
+        day = dateVal[2];
 
         var weather = jsonString.pTypes[i];
 
@@ -251,10 +263,10 @@ export class HomePage {
             break;
         }
 
-        var temp = "" + ((9.0 / 5.0) * (jsonString.pTemp[i] - 273) + 32).toFixed(2) + "° F";
-        var humd = jsonString.pHumd[i] + "%";
-        var press = jsonString.pPress[i].toFixed(2) + " hPa";
-        var wind = (jsonString.pWindspeed[0] * 2.23694).toFixed(2) + " mph";
+        var temp = "" + ((9.0 / 5.0) * (jsonString.pTemps[i] - 273) + 32).toFixed(2) + "° F";
+        var humd = jsonString.pHumiditys[i].toFixed(0) + "%";
+        var press = jsonString.pPressures[i].toFixed(2) + " hPa";
+        var wind = (jsonString.pWindspeeds[i] * 2.23694).toFixed(2) + " mph";
 
         var jsonPred = '{"dt": "' + month + "/" + day + "/" + year + '", "temp": "' + temp + '", "humd":"' + humd + '", "press":"' + press + '", "wind":"' + wind + '", "weather":"' + weather + '", "icon":"' + icon + '", "color":"' + color + '"}';
         this.forecastPreds.push(JSON.parse(jsonPred));
