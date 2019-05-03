@@ -178,5 +178,5 @@ function(year, month, day){
   history.df <- data.df[c(day1Row, day2Row, day3Row, day4Row, day5Row),]
   
   list(dates = history.df$dtiso, hTypes = history.df$weathertype, hTemps = history.df$temp, hPressures = history.df$pressure, hHumiditys = history.df$humidity, hWindspeeds = history.df$windspeed, hWindDegs = history.df$winddeg, hCloudcovs = history.df$cloudcov, 
-       pTypes = prediction.df$weathertype, pTemps = prediction.df$tempVals, hPressures = prediction.df$pressureVals, hHumiditys = prediction.df$humidityVals, pWindspeeds = prediction.df$windspeedVals, pWindDegs = prediction.df$winddegVals, pCloudcovs = prediction.df$cloudcovVals)
+       pTypes = prediction.df$weathertype, pTemps = prediction.df$tempVals, pPressures = prediction.df$pressureVals, pHumiditys = prediction.df$humidityVals, pWindspeeds = prediction.df$windspeedVals, pWindDegs = prediction.df$winddegVals, pCloudcovs = prediction.df$cloudcovVals)
 }
