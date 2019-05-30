@@ -2,7 +2,9 @@
 title: "Project draft"
 author: "Lucy Cousins and Jacob Bashista"
 date: "5/3/2019"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ## R Markdown
@@ -16,7 +18,7 @@ This first block of code reads the data file and creates a training and testing 
 library(ROCR)
 library(class)
 
-data.df <- read.csv("cleaned_data.csv")
+data.df <- read.csv("Data/cleaned_data.csv")
 set.seed(12345)
 data.size <- nrow(data.df)
 train.size <- .80
